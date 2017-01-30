@@ -1,0 +1,35 @@
+Dragut and Blaschke
+In their classification scheme, which is loosely based on DIkau(1989), they chose 2° as the crisp slope threshold defining flat areas and 45 for steep slopes, whereas other values in the classification system are fuzzy.
+
+Englisch & Killian:  auch 2° for flat areas,5 for schwachgeneigt,10 mäßig geneigt
+
+Mishimye:The catchment generally has undulating topography with gentle to moderate slopes. 
+SRTM, ASTER GDEM, GEOEYE (based on 5m stereoimages);  ecognition
+The GEOEYE DEM (created from GeoEye stereo-images) was the most effective in producing land component boundaries that coincide with morphological discontinuities. 
+
+
+Arrell.
+ Classification was performed at resolutions of 50, 100, 200 and 400 m. The coarser DEM resolutions were obtained by resampling the original 50 m DEM using a mean resampling method. Tables show the cluster means of gradient (tangent) and curvatures for the different landforms
+Interessant:Fig. 10. Resolution-based changes to ridge recognition.
+4.3. Variation of morphometric class with resolution
+Discussion.The examination of the defuzzified classifications identified resolution as a dominating factor in landform identification and classification. 
+
+Hughes et al: 
+As the major aim of the DTM is to identify hillslope elements, we regard an interpolated grid resolution of 15 m as adequate to represent those structures. window of 9 × 9 cells, 
+A hillslope position index (Schmidt and Hewitt, 2004) was used in combination with slope gradient and curvature to define land elements. The land elements used have been applied successfully to soil-landscape modelling of steeplands in the Canterbury foothills, New Zealand (Schmidt et al. 2005b)
+
+Schmidt and Hewitt:
+ A DTM of 15-m grid size 
+Model parameters: window size: 135 m, slope thresholds: 2–10°, curvature thresholds: 1/500–1/200 1/m.The final land element model is derived by combining the form classification with the higher scale terrain classification. 
+For example, slope thresholds, subdividing backslope units from ridges and valleys, depend on the local characteristics of the landform, i.e. the gradient of the slopes and valleys. Global thresholds, as used in the presented technique, are regarded as producing poor results
+he results show that it is possible to derive land elements for steepland areas based on geometry and landscape context using a relatively simple model. 
+
+Schaetzl: wird dcatena wo zietiert?
+
+Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
+UNBEDINGT BODEN REINBRINGEN
+
+, the models developed here are incapable of ....
+Dann: welche issues und mögliche verbesserungen
+aus Schmidt and Hewitt:
+A series of issues have been identified that could be used to improve the methodology, including (a) spatially variable scale, (b) locally adaptive thresholds, (c) improved modelling of landscape position, (d) better rules describing neighborhood relationships and geomorphometric context, and (e) the form and connectivity constraints of land elements. These issues are discussed in the following paragraphs.
