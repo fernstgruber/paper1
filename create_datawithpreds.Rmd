@@ -1,0 +1,249 @@
+---
+title: "comparison"
+author: "NA"
+date: "12/06/2016"
+output: html_document
+---
+
+```{r}
+fuzzy_makro_gl1 = "Fuzzylandform_res150m_ls3_hs21_R11000_R2714"
+fuzzy_makro_gl2 = "Fuzzylandform_res150m_ls6_hs12_R19803_R2333"
+fuzzy_meso_gl1 = "Fuzzylandform_res50m_ls15_hs21_R15000_R2500"
+fuzzy_meso_gl2 = "Fuzzylandform_res150m_ls3_hs21_R11000_R2714"
+dikau_makro_gl1 = "curv_landform_res100m_t600"
+dikau_makro_gl2= "curv_landform_res100m_t600"
+dikau_meso_gl1 = "curv_landform_res50m_t700"
+dikau_meso_gl2 = "curv_landform_res50m_t300"
+geom_makro_gl1 = "geom_DTM_50m_avg_fl10_L400m"
+geom_makro_gl2= "geom_DTM_50m_avg_fl10_L400m"
+geom_meso_gl1 = "geom_10m_fl8_L8"
+geom_meso_gl2 = "geom_10m_fl8_L15"
+wood_makro_gl1 = "feature_DTM_50m_avg_ws5_ts14_tc0p002000"
+wood_makro_gl2= "feature_DTM_50m_avg_ws5_ts14_tc0p002000"
+wood_meso_gl1 = "feature_DTM_SouthTyrol_10m_ws11_ts11_tc0p006000"
+wood_meso_gl2 = "feature_DTM_SouthTyrol_10m_ws15_ts15_tc0p004000"
+tpiLF_makro_gl1 =  "TPI_landforms_r70R250_10m"
+tpiLF_makro_gl2 = "TPI_landforms_r150R700"
+tpiLF_makro_gl2plus = c("TPI_landforms_r150R700","TPI_landforms_r50R200")
+tpiLF_meso_gl1 = "TPI_landforms_r90R50_10m"
+tpiLF_meso_gl2 = "TPI_landforms_r80R300_10m"
+terrain_makro_gl1=c("Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5")
+terrain_makro_gl2 = c("Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5")
+terrain_meso_gl1 = c("TPI_i0m_o70m_10m","slope_DTM_50m_avg_ws3")
+terrain_meso_gl2 = c("TPI_i0m_o90m_10m","Slope")
+#iwapike_makro_gl1=c("iwapike_res100m_r1_n8") 
+iwapike_makro_gl1=c("landforms_Conrad_10cells_12classes")   #res50m
+iwapike_makro_gl2 = c("landforms_Conrad_7cells_12classes")   #res50m
+iwapike_meso_gl1 = c("iwapike_r2_n8")  #res10m
+iwapike_meso_gl2 = c("iwapike_r2_n12")  #res10m
+
+source("/home/fabs/Data/paper1_lenny/fabians_and_rossiters_functions.R")
+source("/home/fabs/Data/paper1_lenny/evaluateforwardselection_dev.R")
+setwd("/home/fabs/Data/paper1_lenny/results_fuzzy/")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/landformlegends.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/makroreddata_andpredlists.RData")
+relief_defredmak <- makroreddata[c("Def_red_mak","AufID")]
+defredmak_ID <- makroreddata$AufID
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/mesoreddata_andpredlists.RData")
+relief_defredmes <- mesoreddata[c("Def_red_mes","AufID")]
+defredmes_ID <- mesoreddata$AufID
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/makrodata_andpredlists.RData")
+relief_ezclass <- makrodata[c("EZ_class","AufID")]
+ezclass_ID <-makrodata$AufID
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/mesodata_andpredlists.RData")
+relief_ezclassmes <- mesodata[c("EZ_class_mes","AufID")]
+ezclassmes_ID <-mesodata$AufID
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/fuzzydata.RData")
+fuzzy <- merge(x=fuzzy10m,relief_defredmak,by="AufID",all.x=T)
+fuzzy <- merge(x=fuzzy,relief_defredmes,by="AufID",all.x=T)
+fuzzy <- merge(x=fuzzy,relief_ezclass,by="AufID",all.x=T)
+fuzzy <- merge(x=fuzzy,relief_ezclassmes,by="AufID",all.x=T)
+
+fuzzy_defredmes <- fuzzy[fuzzy$AufID %in% defredmes_ID,c("AufID","Fuzzylandform_res50m_ls15_hs21_R15000_R2500","Def_red_mes")]
+fuzzy_defredmak <- fuzzy[fuzzy$AufID %in% defredmak_ID,c("AufID","Fuzzylandform_res150m_ls3_hs21_R11000_R2714","Def_red_mak")]
+fuzzy_ezclass <- fuzzy[fuzzy$AufID %in% ezclass_ID,c("AufID","Fuzzylandform_res150m_ls6_hs12_R19803_R2333","EZ_class")]
+fuzzy_ezclassmes <- fuzzy[fuzzy$AufID %in% ezclassmes_ID,c("AufID","Fuzzylandform_res150m_ls3_hs21_R11000_R2714","EZ_class_mes")]
+rm(fuzzy10m)
+rm(fuzzy)
+
+geom_defredmes <- mesoreddata[mesoreddata$AufID %in% defredmes_ID,c("AufID","geom_10m_fl8_L8","Def_red_mes")]
+geom_defredmak <- makroreddata[makroreddata$AufID %in% defredmak_ID,c("AufID","geom_DTM_50m_avg_fl10_L400m","Def_red_mak")]
+geom_ezclass <- makrodata[makrodata$AufID %in% ezclass_ID,c("AufID","geom_DTM_50m_avg_fl10_L400m","EZ_class")]
+geom_ezclassmes <- mesodata[mesodata$AufID %in% ezclassmes_ID,c("AufID","geom_10m_fl8_L15","EZ_class_mes")]
+#########################
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_ezclass_dikau.RData")
+dikau_ezclass <- modeldata_ezclass_dikau[modeldata_ezclass_dikau$AufID %in% ezclass_ID,c("AufID","curv_landform_res100m_t600","EZ_class")]
+dikau_ezclass$curv_landform_res100m_t600 <- as.factor(dikau_ezclass$curv_landform_res100m_t600)
+rm(modeldata_ezclass_dikau)
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_ezclassmes_dikau.RData")
+dikau_ezclassmes <- modeldata_ezclassmes_dikau[modeldata_ezclassmes_dikau$AufID %in% ezclassmes_ID,c("AufID","curv_landform_res50m_t300","EZ_class_mes")]
+dikau_ezclassmes$curv_landform_res50m_t300 <- as.factor(dikau_ezclassmes$curv_landform_res50m_t300)
+rm(modeldata_ezclassmes_dikau)
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_makrored_dikau.RData")
+dikau_defredmak <- modeldata_makrored_dikau[modeldata_makrored_dikau$AufID %in% defredmak_ID,c("AufID","curv_landform_res100m_t600","Def_red_mak")]
+dikau_defredmak$curv_landform_res100m_t600 <- as.factor(dikau_defredmak$curv_landform_res100m_t600)
+rm(modeldata_makrored_dikau)
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_mesored_dikau.RData")
+dikau_defredmes <- modeldata_mesored_dikau[modeldata_mesored_dikau$AufID %in% defredmes_ID,c("AufID","curv_landform_res50m_t700","Def_red_mes")]
+dikau_defredmes$curv_landform_res50m_t700 <- as.factor(dikau_defredmes$curv_landform_res50m_t700)
+rm(modeldata_mesored_dikau)
+###################################wooddata 
+  load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_mesoreddata_wood_withAufID.RData")
+wood_defredmes<-modeldata_mesoreddata_wood[modeldata_mesoreddata_wood$AufID %in% defredmes_ID,c("AufID","feature_DTM_SouthTyrol_10m_ws11_ts11_tc0p006000","Def_red_mes")]
+rm(modeldata_mesoreddata_wood)
+  load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_makroreddata_wood_withAufID.RData")
+wood_defredmak<-modeldata_makroreddata_wood[modeldata_makroreddata_wood$AufID %in% defredmak_ID,c("AufID","feature_DTM_50m_avg_ws5_ts14_tc0p002000","Def_red_mak")]
+str(wood_defredmak)
+rm(modeldata_makroreddata_wood)
+  load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_makrodata_wood_withAufID.RData")
+wood_ezclass<-modeldata_makrodata_wood[modeldata_makrodata_wood$AufID %in% ezclass_ID,c("AufID","feature_DTM_50m_avg_ws5_ts14_tc0p002000","EZ_class")]
+str(wood_ezclass)
+rm(modeldata_makrodata_wood)
+  load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_mesodata_wood_withAufID.RData")
+wood_ezclassmes<-modeldata_mesodata_wood[modeldata_mesodata_wood$AufID %in% ezclassmes_ID,c("AufID","feature_DTM_SouthTyrol_10m_ws15_ts15_tc0p004000","EZ_class_mes")]
+str(wood_ezclassmes)
+rm(modeldata_mesodata_wood)
+######################################################
+###TPILANDFORMS
+tpiLF_defredmes <- mesoreddata[mesoreddata$AufID %in% defredmes_ID,c("AufID",tpiLF_meso_gl1,"Def_red_mes")]
+tpiLF_defredmak <- makroreddata[makroreddata$AufID %in% defredmak_ID,c("AufID",tpiLF_makro_gl1,"Def_red_mak")]
+tpiLF_ezclass <- makrodata[makrodata$AufID %in% ezclass_ID,c("AufID",tpiLF_makro_gl2,"EZ_class")]
+tpiLF_ezclassmes <- mesodata[mesodata$AufID %in% ezclassmes_ID,c("AufID",tpiLF_meso_gl2,"EZ_class_mes")]
+###########################################
+#TERRAIN COLS
+terrain_defredmes <- mesoreddata[mesoreddata$AufID %in% defredmes_ID,c("AufID",terrain_meso_gl1,"Def_red_mes")]
+terrain_defredmak <- makroreddata[makroreddata$AufID %in% defredmak_ID,c("AufID",terrain_makro_gl1,"Def_red_mak")]
+terrain_ezclass <- makrodata[makrodata$AufID %in% ezclass_ID,c("AufID",terrain_makro_gl2,"EZ_class")]
+terrain_ezclassmes <- mesodata[mesodata$AufID %in% ezclassmes_ID,c("AufID",terrain_meso_gl2,"EZ_class_mes")]
+###########################################
+#IWAPIKE COLS
+load("/home/fabs/Data/paper1_lenny/results_iwapike/modeldata_iwapike.RData")
+iwapike_defredmes <- modeldata_defredmes_iwapike[modeldata_defredmes_iwapike$AufID %in% defredmes_ID,c("AufID",iwapike_meso_gl1,"Def_red_mes")]
+iwapike_defredmak <- modeldata_defredmak_iwapike[modeldata_defredmak_iwapike$AufID %in% defredmak_ID,c("AufID",iwapike_makro_gl1,"Def_red_mak")]
+iwapike_ezclass <- modeldata_ezclass_iwapike[modeldata_ezclass_iwapike$AufID %in% ezclass_ID,c("AufID",iwapike_makro_gl2,"EZ_class")]
+iwapike_ezclassmes <- modeldata_ezclassmes_iwapike[modeldata_ezclassmes_iwapike$AufID %in% ezclassmes_ID,c("AufID",iwapike_meso_gl2,"EZ_class_mes")]
+#######################################
+#make topolegends
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/allmodeldataforSVM.RData")
+#######################################
+redmak_old <- levels(makrodata_red$Def_red_mak)
+redmak <- redmak_old[c(1,6,5,7,2,3,4)]
+MGL1 <- c("FL","LO","DA","FS","BS","SH","RI")
+makrolegend_gen1 <- data.frame(MGL1)
+makrolegend_gen1$Def_red_mak <-  factor(redmak, levels=redmak_old[c(1,6,5,7,2,3,4)])
+makrolegend_gen1$MGL1 <- factor(MGL1,levels=c("FL","LO","DA","FS","BS","SH","RI")) 
+str(makrolegend_gen1)
+makrolegend_gen1
+ezclass<- levels(EZclassdata$EZ_class)
+ezclass <- ezclass[c(2,1,3,4)]
+MGL2 <- c("CH","FS","BS","SH")
+makrolegend_gen2 <- data.frame(MGL2)
+makrolegend_gen2$EZ_class  <-factor(ezclass,levels=c("gulley","footslope","hillslope","shoulder")) 
+makrolegend_gen2$MGL2 <- factor(MGL2,levels=c("CH","FS","BS","SH"))
+str(makrolegend_gen2)
+makrolegend_gen2
+############################################################################
+mesored <- levels(mesodata_red$Def_red_mes)
+mesored <- mesored[c(1,8,7,9,2,4,3,5,6)]
+mGL1 <-c("FL","LO","DA","FS","SF","BS","SS","SH","RI")
+mesolegend_gen1 <- data.frame(mGL1)
+mesolegend_gen1$Def_red_mes <-  factor(mesored, levels=c("Eben","Tief","Schwemmschutt","Unterhang","HVF", "Mittelhang","HVS","Oberhang","Ruecken"))
+mesolegend_gen1$mGL1 <- factor(mGL1,levels=c("FL","LO","DA","FS","SF","BS","SS","SH","RI")) 
+str(mesolegend_gen1)
+mesolegend_gen1
+####################################
+############################################################################
+ezclassmes <- levels(EZclassmesdata$EZ_class_mes)
+mGL2 <-c("FS","BS","SH")
+mesolegend_gen2 <- data.frame(mGL2)
+mesolegend_gen2$EZ_class_mes <-  factor(ezclassmes, levels=c("footslope","hillslope","shoulder"))
+mesolegend_gen2$mGL2 <- factor(mGL2,levels=c("FS","BS","SH")) 
+str(mesolegend_gen2)
+mesolegend_gen2
+####################################
+
+source("/home/fabs/Data/paper1_lenny/fabians_and_rossiters_functions.R")
+require(sp)
+require(rgdal)
+shape <- readOGR("/home/fabs/Data/paper1_lenny/GIS/shapes_paper1/Forstpunkte_utm32n.shp",layer="Forstpunkte_utm32n")
+origdata <- shape@data
+origdata$order <- 1:nrow(shape@data)
+origdata <- merge(x=origdata,y=relief_defredmak,by="AufID",all.x=T)
+origdata <- merge(x=origdata,y=relief_defredmes,by="AufID",all.x=T)
+origdata <- merge(x=origdata,y=relief_ezclass,by="AufID",all.x=T)
+origdata <- merge(x=origdata,y=relief_ezclassmes,by="AufID",all.x=T)
+datawithpreds <- origdata
+
+result_df<- predict_radial_newlegend_is.correct(modeldata=fuzzy_defredmak,dependent="Def_red_mak",predictors=fuzzy_makro_gl1,legend=makrolegend_gen1,shortpred="fz")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df <- predict_radial_newlegend_is.correct(modeldata=fuzzy_ezclass,dependent="EZ_class",predictors=fuzzy_makro_gl2,legend=makrolegend_gen2,shortpred="fz")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df<- predict_radial_newlegend_is.correct(modeldata=fuzzy_defredmes,dependent="Def_red_mes",predictors=fuzzy_meso_gl1,legend=mesolegend_gen1,shortpred="fz")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df <- predict_radial_newlegend_is.correct(modeldata=fuzzy_ezclassmes,dependent="EZ_class_mes",predictors=fuzzy_meso_gl2,legend=mesolegend_gen2,shortpred="fz")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+##########################################
+result_df  <- predict_radial_newlegend_is.correct(modeldata=dikau_defredmak,dependent="Def_red_mak",predictors=dikau_makro_gl1,legend=makrolegend_gen1,shortpred="dk")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=dikau_ezclass,dependent="EZ_class",predictors=dikau_makro_gl2,legend=makrolegend_gen2,shortpred="dk")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=dikau_defredmes,dependent="Def_red_mes",predictors=dikau_meso_gl1,legend=mesolegend_gen1,shortpred="dk")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df <- predict_radial_newlegend_is.correct(modeldata=dikau_ezclassmes,dependent="EZ_class_mes",predictors=dikau_meso_gl2,legend=mesolegend_gen2,shortpred="dk")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+##########################################
+result_df <- predict_radial_newlegend_is.correct(modeldata=wood_defredmak,dependent="Def_red_mak",predictors=wood_makro_gl1,legend=makrolegend_gen1,shortpred="wd")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=wood_ezclass,dependent="EZ_class",predictors=wood_makro_gl2,legend=makrolegend_gen2,shortpred="wd")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df <- predict_radial_newlegend_is.correct(modeldata=wood_defredmes,dependent="Def_red_mes",predictors=wood_meso_gl1,legend=mesolegend_gen1,shortpred="wd")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=wood_ezclassmes,dependent="EZ_class_mes",predictors=wood_meso_gl2,legend=mesolegend_gen2,shortpred="wd")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+##########################################
+result_df <- predict_radial_newlegend_is.correct(modeldata=geom_defredmak,dependent="Def_red_mak",predictors=geom_makro_gl1,legend=makrolegend_gen1,shortpred="gm")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=geom_ezclass,dependent="EZ_class",predictors=geom_makro_gl2,legend=makrolegend_gen2,shortpred="gm")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=geom_defredmes,dependent="Def_red_mes",predictors=geom_meso_gl1,legend=mesolegend_gen1,shortpred="gm")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=geom_ezclassmes,dependent="EZ_class_mes",predictors=geom_meso_gl2,legend=mesolegend_gen2,shortpred="gm")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+##########################################
+##########################################
+result_df  <- predict_radial_newlegend_is.correct(modeldata=tpiLF_defredmak,dependent="Def_red_mak",predictors=tpiLF_makro_gl1,legend=makrolegend_gen1,shortpred="tp")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=tpiLF_ezclass,dependent="EZ_class",predictors=tpiLF_makro_gl2,legend=makrolegend_gen2,shortpred="tp")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=tpiLF_defredmes,dependent="Def_red_mes",predictors=tpiLF_meso_gl1,legend=mesolegend_gen1,shortpred="tp")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df <- predict_radial_newlegend_is.correct(modeldata=tpiLF_ezclassmes,dependent="EZ_class_mes",predictors=tpiLF_meso_gl2,legend=mesolegend_gen2,shortpred="tp")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+##########################################
+##########################################
+result_df  <- predict_radial_newlegend_is.correct(modeldata=terrain_defredmak,dependent="Def_red_mak",predictors=terrain_makro_gl1,legend=makrolegend_gen1,shortpred="tn")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=terrain_ezclass,dependent="EZ_class",predictors=terrain_makro_gl2,legend=makrolegend_gen2,shortpred="tn")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=terrain_defredmes,dependent="Def_red_mes",predictors=terrain_meso_gl1,legend=mesolegend_gen1,shortpred="tn")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+result_df  <- predict_radial_newlegend_is.correct(modeldata=terrain_ezclassmes,dependent="EZ_class_mes",predictors=terrain_meso_gl2,legend=mesolegend_gen2,shortpred="tn")
+datawithpreds <- merge(x=datawithpreds,y=result_df,by="AufID",all.x=T)
+##########################################
+
+```
+
+```{r}
+correctdefredmaklist<- paste("c",c("fz","dk","wd","gm","tp","tn"),"MGL1",sep="_")
+correctdefredmeslist<- paste("c",c("fz","dk","wd","gm","tp","tn"),"mGL1",sep="_")
+correctezclasslist<- paste("c",c("fz","dk","wd","gm","tp","tn"),"MGL2",sep="_")
+correctezclassmeslist<- paste("c",c("fz","dk","wd","gm","tp","tn"),"mGL2",sep="_")
+datawithpreds$c_MGL1 <- apply(datawithpreds[correctdefredmaklist],1,sum)
+datawithpreds$c_mGL1 <- apply(datawithpreds[correctdefredmeslist],1,sum)
+datawithpreds$c_MGL2 <- apply(datawithpreds[correctezclasslist],1,sum)
+datawithpreds$c_mGL2 <- apply(datawithpreds[correctezclassmeslist],1,sum)
+datawithpreds <- datawithpreds[order(datawithpreds$order,decreasing = F),]
+shape@data <- datawithpreds
+#save(datawithpreds,file="/home/fabs/Data/paper1_lenny/datawithpreds.RData")
+#writeOGR(shape,dsn="/home/fabs/Data/paper1_lenny/GIS/shapes_paper1/datapointswithpreds.shp",driver="ESRI Shapefile",layer="datapointswithpreds")
+```

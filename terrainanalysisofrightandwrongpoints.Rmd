@@ -1,0 +1,130 @@
+---
+title: "wrongrightanalyses"
+author: "fabian gruber"
+date: "01/10/2017"
+output: html_document
+---
+To investigate whether there are some differences regarding the terrain parameters of the points that were always classified correctly, and those never, a svm-based classififcation scheme similar to that applied to the topographic positions was used to seperate these two classes of points.
+
+At macro scale and generalisation level 1 and 2 the results are:
+```{r,include=FALSE}
+setwd("/home/fabs/Data/paper1_lenny/")
+source("/home/fabs/Data/paper1_lenny/fabians_and_rossiters_functions.R")
+load("/home/fabs/Data/paper1_lenny/mesomakrolegends.RData")
+```
+
+```{r}
+evaluateforwardCV(mypath = "/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/wrongrighc_MGL1_terraintpitophat",kk = 1:10,endround = 3,type = "svm",yrange = c(0,0.6) )
+```
+
+```{r}
+evaluateforwardCV(mypath = "/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/wrongrighc_MGL2_terraintpitophat",kk = 1:10,endround = 3,type = "svm",yrange = c(0,0.6) )
+```
+
+and at meso scale
+
+```{r}
+evaluateforwardCV(mypath = "/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/wrongrighc_mGL1_terraintpitophat",kk = 1:10,endround = 3,type = "svm",yrange = c(0,0.6) )
+```
+
+```{r}
+evaluateforwardCV(mypath = "/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/wrongrighc_mGL2_terraintpitophat",kk = 1:10,endround = 3,type = "svm",yrange = c(0,0.6) )
+```
+
+
+SO, the interesting terrain parameters seem to be:   
+at macro GL1:  quite some improvement 
+hillheight\_vr1500\_hr1000\_t125    
+Texture    
+crosc\_DTM\_50m\_avg\_ws5    
+ TPI\_i0m\_o400m\_10m    
+ 
+at macro GL2: hardly improvement     
+TPI\_i0m\_o900m    
+minic\_ws15    
+crosc\_ws11    
+hillheight\_vr1500\_hr1500\_t200    
+
+at mesot GL1: quite some improvement  
+slope\_ws7   
+General\_Curvature     
+TPI\_i0m\_o120m\_10m    
+
+at meso GL2: no improvement   
+Topographic\_Wetness\_Index  
+
+## So, are the macro scale TPs wrong because the surveyor was more concetrated on  meso scale? 
+```{r,include =F}
+load("/home/fabs/Data/paper1_lenny/datawithpreds.RData")
+MGL1 <- datawithpreds[!(is.na(datawithpreds$c_MGL1)),]
+MGL2 <- datawithpreds[!(is.na(datawithpreds$c_MGL2)),]
+mGL1 <- datawithpreds[!(is.na(datawithpreds$c_mGL1)),]
+mGL2 <- datawithpreds[!(is.na(datawithpreds$c_mGL2)),]
+n0 = nrow(MGL1[MGL1$c_MGL1== 0,])  #454
+n6 = nrow(MGL1[MGL1$c_MGL1== 6,])  #398
+
+
+
+importantcols <- names(datawithpreds)[c(1,55:110)]
+allright_MGL1 <- datawithpreds[datawithpreds$c_MGL1 %in% c(6),importantcols]
+allright_MGL1 <- merge(allright_MGL1,makrolegend_gen1,by="Def_red_mak")
+allright_MGL1 <- merge(allright_MGL1,mesolegend_gen1,by="Def_red_mes")
+
+
+allwrong_MGL1 <-  datawithpreds[datawithpreds$c_MGL1 %in% c(0),importantcols]
+allwrong_MGL1 <- merge(allwrong_MGL1,makrolegend_gen1,by="Def_red_mak")
+allwrong_MGL1$predicted <- apply(allwrong_MGL1[,c("p_fz_MGL1","p_dk_MGL1","p_wd_MGL1","p_gm_MGL1","p_tp_MGL1","p_tn_MGL1")],1,FUN=Modus)
+allwrong_MGL1_withmeso<- merge(allwrong_MGL1,mesolegend_gen1,by="Def_red_mes")
+
+allright_mGL1 <- datawithpreds[datawithpreds$c_mGL1 %in% c(6),importantcols]
+allright_mGL1 <- merge(allright_mGL1,mesolegend_gen1,by="Def_red_mes")
+allwrong_mGL1 <-  datawithpreds[datawithpreds$c_mGL1 %in% c(0),importantcols]
+allwrong_mGL1 <- merge(allwrong_mGL1,mesolegend_gen1,by="Def_red_mes")
+allwrong_mGL1$predicted <- apply(allwrong_mGL1[,c("p_fz_mGL1","p_dk_mGL1","p_wd_mGL1","p_gm_mGL1","p_tp_mGL1","p_tn_mGL1")],1,FUN=Modus)
+
+
+#MGL1_tn <- merge(x=MGL1,y=makroreddata[c("AufID","hillheight_vr1500_hr1000_t125","Texture","crosc_DTM_50m_avg_ws5","TPI_i0m_o400m_10m","Normalized_Height","TPI_i0m_o250m_10m")],by="AufID",all.x=T)
+#mGL1_tn <- merge(x=mGL1,y=mesoreddata[c("AufID","slope_ws7","General_Curvature","TPI_i0m_o120m_10m")],by="AufID",all.x=T)
+#MGL2_tn <- merge(x=MGL2,y=makrodata[c("AufID","TPI_i0m_o900m","minic_ws15","crosc_ws11","hillheight_vr1500_hr1500_t200")],by="AufID",all.x=T)
+#mGL2_tn <- merge(x=mGL2,y=mesodata[c("AufID","Topographic_Wetness_Index")],by="AufID",all.x=T)
+
+```
+  
+  At Macro scale (GL1), 398 points (25\%) are always classified correctly while 454 (28\%) are always misclassified.
+  At Meso scale (GL1), 499 (35\%) points are always classified correctly while 454 (32\%) are always misclassified.
+
+The meso scale (as seen by surveyor) of the survey points that are always classified right at macro scale
+```{r}
+par(mfcol=c(1,2))
+plot(datawithpreds[datawithpreds$c_MGL1== 6,"Def_red_mes"],las=2, main="All CORRECT",ylim=c(0,160))
+plot(datawithpreds[datawithpreds$c_MGL1== 0,"Def_red_mes"],las=2,main="NEVER CORRECT",ylim=c(0,160))
+```
+The difference does not seem very significant, resembles more or less the overall distribution of landforms.  
+Are the wrongly classified points more similar to the meso scale? lets compare confusion table of Macro and Meso:  
+```{r}
+print("Analysis of the points that are always misclassified")
+print("MAKRORED (predicted) VS. MAKRORED (surveyor)")
+table(allwrong_MGL1$predicted,allwrong_MGL1$makrogeneralized1)
+print("MAKRORED (surveyed) VS. MESORED (surveyor)")
+table(allwrong_MGL1$mesogeneralized1,allwrong_MGL1$makrogeneralized1)
+```
+  
+91 of the points always misclassified have the same topographic position at meso and macro scale. 
+How does this compare to those points always classified right, and overall?
+```{r}
+print("MAKRORED (surveyed) VS. MESORED (surveyor)")
+table(allright_MGL1$mesogeneralized1,allright_MGL1$makrogeneralized1)
+
+```
+   
+Here 170 points have the same topographic position at meso and macro scale, though almost always BS
+------------------------
+lets check what happens when the predictions for meso scale based on terrain parameters is compared to Def\_red\_mak
+```{r}
+print("MAKRORED (modeled) VS. MAKRORED (surveyed)")
+table(allwrong_MGL1$p_tn_MGL1,allwrong_MGL1$makrogeneralized1)
+```
+
+
+
+
