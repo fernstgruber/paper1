@@ -1,1 +1,1 @@
-Thess are ideas and codes for my paper1
+Ideas and code for my paper1
