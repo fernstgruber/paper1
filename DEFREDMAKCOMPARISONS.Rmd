@@ -1,0 +1,181 @@
+---
+title: "Def_red_mak RESULTS"
+author: "fabian gruber"
+date: "February 9, 2017"
+output: html_document
+---
+
+This compares the results of the forward stepwise selection for the macro scale GL1 and analyses the difference that stem from applying different measures of similarity, overall user accuracy, kappa, tau and quality.
+
+```{r}
+source("/media/fabs/Volume/Data/temp_delilah/DISS_new/neueszupaper1/fabians_and_rossiters_functions.R")
+load("/media/fabs/Volume/Data/temp_delilah/DISS_new/neueszupaper1/FWCV/makroreddata_andpredlists.RData")
+relief_defredmak <- makroreddata[c("Def_red_mak","AufID")]
+defredmak_ID <- makroreddata$AufID
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/model_IDs.RData")
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/mesomakrolegends.RData")
+```
+
+## Dikau's Curvature Classification
+
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mak_allcurvcols_plusplus/",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mak_allcurvcols/",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mak_allcurvcols/",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mak_allcurvcols/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one parameter sufficient:curv_landform_res100m_t600  (2x curv_landform_res100m_t700)
+- KAPPA: one parameter sufficient:curv_landform_res100m_t400 (always nr1)
+- TAU: one parameter sufficient:curv_landform_res100m_t400  (2x curv_landform_res50m_t900)
+- QUALITY: one parameter sufficient:curv_landform_res100m_t400 (always nr1)  
+
+```{r,echo=FALSE}
+predictors=c("curv_landform_res100m_t600","curv_landform_res100m_t400")
+p=predictors[1]
+for(p in predictors){
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_makrored_dikau.RData")
+dikau_defredmak <- modeldata_makrored_dikau[modeldata_makrored_dikau$AufID %in% defredmak_ID,c("AufID",p,"Def_red_mak")]
+dikau_defredmak[[p]] <- as.factor(dikau_defredmak[[p]])
+rm(modeldata_makrored_dikau)
+predict_radial_newlegend_full(modeldata=dikau_defredmak,dependent="Def_red_mak",predictors=p,legend=makrolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## Woods morphometric features
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mak_wood_plus//",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mak_reallyfeatures//",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mak_allfeatures/",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mak_allfeatures/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one parameter: 7x feature_DTM_50m_avg_ws5_ts14_tc0p002000   (2x feature_DTM_SouthTyrol_10m_ws27_ts13_tc0p002000) A second parameter improves slightly (feature_DTM_50m_avg_ws3_ts8_tc0p000010)
+- KAPPA: one parameter sufficient: 5x  feature_DTM_50m_avg_ws11_ts15_tc0p000600 but not as clear
+- TAU: one parameter sufficient:7x feature_DTM_50m_avg_ws11_ts15_tc0p000700  , the addtion of feature_DTM_SouthTyrol_10m_ws11_ts9_tc0_000010 improves (the curv is clear, and maybe the slope (7 to 11) but not the rest)
+- QUALITY: one parameter (feature_DTM_50m_avg_ws11_ts15_tc0p000700)  not sufficient, but the first is alrealdy so unclear, the second isnt better. However the curvature is constant, also slope, to a lesser degree also for the second parameter (0.00001)
+
+```{r,echo=FALSE}
+predictors=c("feature_DTM_50m_avg_ws5_ts14_tc0p002000","feature_DTM_50m_avg_ws11_ts15_tc0p000700")
+p=predictors[1]
+for(p in predictors){
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_makroreddata_wood_withAufID.RData")
+data<- modeldata_makroreddata_wood[modeldata_makroreddata_wood$AufID %in% defredmak_ID,c("AufID",p,"Def_red_mak")]
+rm(modeldata_makroreddata_wood)
+predict_radial_newlegend_full(modeldata=data,dependent="Def_red_mak",predictors=p,legend=makrolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## Schmidt's fuzzy elements
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mak_fuzzynov/",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="//media/fabs/Volume/Data/temp_delilah/DISS_new/neueszupaper1/FWCV/kappa_svm_fw_10fold_5p_trial2Def_red_mak_allfuzzy_reducedto2p",kk = 1:10,endround = 2,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mak_allfuzzy_redto2p",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mak_allfuzzy/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one predictor sufficient (not clear):  NUMBER ONE WITH 5 PICKS:Fuzzylandform_res150m_ls6_hs12_R19803_R2333 
+- KAPPA: one pred suffiencent:Fuzzylandform_res150m_ls9_hs15_R11666_R2555  (3x but quite representative regarding res,slope and more or less curvature)
+- TAU: one sufficient: Fuzzylandform_res150m_ls9_hs12_R19803_R2333; curv thresholds are very similar!! also slope very consistent!
+- QUALITY: sehr unsicher, 2x nr1 = Fuzzylandform_res150m_ls9_hs12_R11250_R2714; auch so ein bisserl ein mittelwert ist Fuzzylandform_res150m_ls6_hs9_R12500_R2500
+  
+```{r,echo=FALSE}
+predictors=c("Fuzzylandform_res150m_ls6_hs12_R19803_R2333","Fuzzylandform_res150m_ls9_hs12_R19803_R2333","Fuzzylandform_res150m_ls9_hs12_R11250_R2714")
+p=predictors[1]
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/fuzzydata.RData")
+fuzzy <- merge(x=fuzzy10m,relief_defredmak,by="AufID",all.x=T)
+
+for(p in predictors){
+fuzzy_defredmak <- fuzzy[fuzzy$AufID %in% defredmak_ID,c("AufID",p,"Def_red_mak")]
+predict_radial_newlegend_full(modeldata=fuzzy_defredmak,dependent="Def_red_mak",predictors=p,legend=makrolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## TPI-based landform classification
+
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mak_alltpilandforms/",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mak_tpilandforms//",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mak_alltpilandforms/",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+  evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mak_alltpilandforms/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one parameter sufficient: TPI_landforms_r70R250_10m (4x)  
+- KAPPA: one parameter sufficient: TPI_landforms_r150R1450 (3x, aber r1=150 und ein großer r2 sind fast immer) TPI_landforms_r70R450_10m (ca 3x)
+- TAU: one parameter sufficient: TPI_landforms_r70R250_10m and TPI_landforms_r60R350_10m are representative of a group of parameters the perform similarily and are in the same range.
+- QUALITY: one parameter sufficient TPI_landforms_r150R600 (4x) seems representativ
+
+```{r,echo=FALSE}
+predictors=c("TPI_landforms_r70R250_10m","TPI_landforms_r150R1450","TPI_landforms_r150R600")
+p=predictors[1]
+for(p in predictors){
+tpiLF_defredmak <- makroreddata[makroreddata$AufID %in% defredmak_ID,c("AufID",p,"Def_red_mak")]
+tpiLF_defredmak[[p]] <- as.factor(tpiLF_defredmak[[p]])
+predict_radial_newlegend_full(modeldata=tpiLF_defredmak,dependent="Def_red_mak",predictors=p,legend=makrolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## Geomorphon-based landforms
+
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mak_allgeoms//",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mak_reallygeoms//",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mak_allgeoms//",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mak_allgeoms/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: only 1 predictor necessary :5x geom_DTM_50m_avg_fl10_L400m (5x 300m)
+- KAPPA: only 1 predictor necessary :8x geom_DTM_50m_avg_fl10_L400m (2x fl8) very consistent results!
+- TAU: only 1 predictor necessary :5x geom_DTM_50m_avg_fl10_L400m (9x 300m)
+- QUALITY: 6x geom_DTM_50m_avg_fl8_L400m (4x fl10)
+
+```{r,echo=FALSE}
+predictors=c("geom_DTM_50m_avg_fl10_L400m","geom_DTM_50m_avg_fl8_L400m")
+p=predictors[1]
+for(p in predictors){
+geom_defredmak <- makroreddata[makroreddata$AufID %in% defredmak_ID,c("AufID",p,"Def_red_mak")]
+predict_radial_newlegend_full(modeldata=geom_defredmak,dependent="Def_red_mak",predictors=p,legend=makrolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## Terrain parameter based model of topographic position
+
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mak_allterrain",kk = 1:10,endround = 10,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mak_tpiterraintophat//",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mak_tpiterraintophat/",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mak_tpiterraintophat//",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one would pick 4, but the fourth is indecisive: Topographic_Wetness_Index,profc_DTM_50m_avg_ws7,minic_DTM_50m_avg_ws5 und evt. slope_DTM_50m_avg_ws7
+- KAPPA: seems 4 are appropriate: NR1: Topographic_Wetness_Index; Nr2=profc_DTM_50m_avg_ws7; Nr3=slope_ws7 or minic_DTM_50m_avg_ws5; NR4 either the other Nr3 or a hillheight or standardized height
+- TAU: first two are always:Topographic_Wetness_Index,profc_DTM_50m_avg_ws7 , the thrid varies but slope ws3 is most often,together with minic_DTM_50m_avg_ws5
+- QUALITY: interestingly, while Topographic_Wetness_Index is always Nr1, slope (ws15 or 5) is second,while TRI is also sometime there, THIS SHOULD BE EXTENDED FOR MORE FEATURES!
+
+```{r,echo=FALSE}
+predictors=list(c("Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5"),c("Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","slope_ws7","Standardized_Height"),c("Topographic_Wetness_Index","slope_ws15"))
+p=predictors[1]
+for(p in predictors){
+terrain_defredmak <- makroreddata[makroreddata$AufID %in% defredmak_ID,c("AufID",unlist(p),"Def_red_mak")]
+predict_radial_newlegend_full(modeldata=terrain_defredmak,dependent="Def_red_mak",predictors=unlist(p),legend=makrolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
