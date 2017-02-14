@@ -1,0 +1,161 @@
+---
+title: "Comparison of South and NorthTyrol"
+author: "fabian gruber"
+date: "02/14/2017"
+output: html_document
+---
+
+ Due to the surprisingly poor model results of topographic position in South Tyrol, a comparable dataset from North Tyrol was acquired. Due to computational time the procedure was performed for only one automated classification algorithm as well as the terrain parameter - based approach. Due to its relatively good performance and it haveing less parameters than Schmidts fuzzy elements, the r.geomorphon - based landform classification was chosen to represenet the various classes of automated landform classifications.
+
+```{r}
+source("/home/fabs/Data/paper1_lenny/fabians_and_rossiters_functions.R")
+```
+
+##Macro scale GL1
+### Geomorphons - UA
+
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mak_allgeoms//",kk = 1:10,endround = 3,yrange = c(0.45,0.6),geheim = "geheimerprederror",error="prederror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_Def_red_mak_geomcols/",kk = 1:10,endround = 5,yrange = c(0.45,0.6),geheim = "geheimerprederror",error="prederror")
+```
+
+### Terrain parameters- UA
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mak_allterrain",kk = 1:10,endround = 10,yrange = c(0.45,0.6),geheim = "geheimerprederror",error="prederror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_Def_red_mak_terraincols/",kk = 1:10,endround = 5,yrange = c(0.45,0.6),geheim = "geheimerprederror",error="prederror")
+```
+
+
+##Meso scale GL1
+### Geomorphons- UA
+
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mes_allgeoms//",kk = 1:10,endround = 3,yrange = c(0.45,0.7),geheim = "geheimerprederror",error="prederror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_Def_red_mes_geomcols/",kk = 1:10,endround = 5,yrange = c(0.45,0.7),geheim = "geheimerprederror",error="prederror")
+```
+
+### Terrain parameters- UA
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mes_allterrain",kk = 1:10,endround = 10,yrange = c(0.4,0.65),geheim = "geheimerprederror",error="prederror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_Def_red_mes_terraincols/",kk = 1:10,endround = 5,yrange = c(0.4,0.65),geheim = "geheimerprederror",error="prederror")
+```
+
+
+##Macro scale GL2
+### Geomorphons- UA
+
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_EZ_class_allgeoms//",kk = 1:10,endround = 3,yrange = c(0.4,0.55),geheim = "geheimerprederror",error="prederror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_EZ_class_geomcols/",kk = 1:10,endround = 5,yrange = c(0.4,0.55),geheim = "geheimerprederror",error="prederror")
+```
+
+### Terrain parameters- UA
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_EZ_class_allterrain/",kk = 1:10,endround = 10,yrange = c(0.4,0.55),geheim = "geheimerprederror",error="prederror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_EZ_class_terraincols//",kk = 1:10,endround = 5,yrange = c(0.4,0.55),geheim = "geheimerprederror",error="prederror")
+```
+
+##Meso scale GL2
+### Geomorphons- UA
+
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_EZ_class_mes_allgeoms//",kk = 1:10,endround = 3,yrange = c(0.3,0.50),geheim = "geheimerprederror",error="prederror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_EZ_class_mes_geomcols/",kk = 1:10,endround = 5,yrange = c(0.3,0.50),geheim = "geheimerprederror",error="prederror")
+```
+
+### Terrain parameters- UA
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_EZ_class_mes_allterrain/",kk = 1:10,endround = 10,yrange = c(0.3,0.45),geheim = "geheimerprederror",error="prederror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_EZ_class_mes_terraincols//",kk = 1:10,endround = 5,yrange = c(0.3,0.45),geheim = "geheimerprederror",error="prederror")
+```
+
+#How about quality?
+##Macro scale GL1
+### Geomorphons- Q
+
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mak_allgeoms/",kk = 1:10,endround = 2,yrange = c(0.75,0.85),geheim = "cv_quality",error="cv_qualityerror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_Def_red_mak_geomcols/",kk = 1:10,endround = 2,yrange = c(0.75,0.95),geheim = "cv_quality",error="cv_qualityerror")
+```
+
+### Terrain parameters- Q
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mak_tpiterraintophat/",kk = 1:10,endround = 2,yrange = c(0.75,0.95),geheim = "cv_quality",error="cv_qualityerror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_Def_red_mak_terraincols/",kk = 1:10,endround = 2,yrange = c(0.75,0.95),geheim = "cv_quality",error="cv_qualityerror")
+```
+
+
+##Meso scale GL1
+### Geomorphons- Q
+
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mes_allgeoms/",kk = 1:10,endround = 2,yrange = c(0.80,0.95),geheim = "cv_quality",error="cv_qualityerror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_Def_red_mes_geomcols//",kk = 1:10,endround = 2,yrange = c(0.80,0.95),geheim = "cv_quality",error="cv_qualityerror")
+```
+
+### Terrain parameters- Q 
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_6pDef_red_mes_tpiterraintophat/",kk = 1:10,endround = 6,yrange = c(0.75,0.90),geheim = "cv_quality",error="cv_qualityerror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_Def_red_mes_terraincols/",kk = 1:10,endround = 2,yrange = c(0.75,0.9),geheim = "cv_quality",error="cv_qualityerror")
+```
+
+
+##Macro scale GL2
+### Geomorphons- Q
+
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pEZ_class_allgeoms//",kk = 1:10,endround = 2,yrange = c(0.55,0.75),geheim = "cv_quality",error="cv_qualityerror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_EZ_class_geomcols/",kk = 1:10,endround = 5,yrange = c(0.55,0.75),geheim = "cv_quality",error="cv_qualityerror")
+```
+
+### Terrain parameters- Q
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pEZ_class_alltpilandforms/",kk = 1:10,endround = 2,yrange = c(0.55,0.75),geheim = "cv_quality",error="cv_qualityerror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_EZ_class_terraincols//",kk = 1:10,endround = 5,yrange = c(0.55,0.75),geheim = "cv_quality",error="cv_qualityerror")
+```
+
+##Meso scale GL2
+### Geomorphons- Q
+
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pEZ_class_mes_allgeoms/",kk = 1:10,endround = 2,yrange = c(0.55,0.65),geheim = "cv_quality",error="cv_qualityerror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_EZ_class_mes_geomcols/",kk = 1:10,endround = 5,yrange = c(0.55,0.65),geheim = "cv_quality",error="cv_qualityerror")
+```
+
+### Terrain parameters- Q
+```{r, echo=FALSE}
+print("SOUTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pEZ_class_mes_tpiterraintophat/",kk = 1:10,endround = 2,yrange = c(0.3,0.70),geheim = "cv_quality",error="cv_qualityerror")
+print("NORTH TYROL")
+evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_EZ_class_mes_terraincols//",kk = 1:10,endround = 5,yrange = c(0.3,0.7),geheim = "cv_quality",error="cv_qualityerror")
+```
