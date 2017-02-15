@@ -48,7 +48,6 @@ predict_radial_newlegend_full(modeldata=ST_mesored,dependent = "Def_red_mes",pre
 print("NORTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_Def_red_mes_geomcols/",kk = 1:10,endround = 5,yrange = c(0.45,0.7),geheim = "geheimerprederror",error="prederror")
 predict_radial_newlegend_full_naomit(modeldata=NT_mesored,dependent = "Def_red_mes",predictors =  "geom_NT_L80m_8deg",legend =mesolegend_gen1,doreturn=F)
-
 ```
 
 ### Terrain parameters- UA
@@ -161,8 +160,12 @@ predict_radial_newlegend_full_naomit(modeldata=NT_mesored,dependent = "Def_red_m
 ```{r, echo=FALSE}
 print("SOUTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_6pDef_red_mes_tpiterraintophat/",kk = 1:10,endround = 6,yrange = c(0.75,0.90),geheim = "cv_quality",error="cv_qualityerror")
+predict_radial_newlegend_full(modeldata=ST_mesored,dependent = "Def_red_mes",predictors = c("TPI_i0m_o80m_10m","slope_DTM_50m_avg_ws3","sindex_vr1500_hr1500_t175","longc_ws11"),legend = ,mesolegend_gen1,doreturn=F)
+
 print("NORTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_Def_red_mes_terraincols/",kk = 1:10,endround = 5,yrange = c(0.75,0.9),geheim = "cv_quality",error="cv_qualityerror")
+predict_radial_newlegend_full_naomit(modeldata=NT_mesored,dependent = "Def_red_mes",predictors =c("Slope_degree_10m","TPI_i0m_o90m_10m","crosc_NT_ws70m","profc_NT_ws110m")  ,legend =mesolegend_gen1,doreturn=F)
+
 ```
 
 
@@ -174,6 +177,9 @@ print("SOUTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pEZ_class_allgeoms//",kk = 1:10,endround = 2,yrange = c(0.55,0.75),geheim = "cv_quality",error="cv_qualityerror")
 print("NORTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_EZ_class_geomcols/",kk = 1:10,endround = 5,yrange = c(0.55,0.75),geheim = "cv_quality",error="cv_qualityerror")
+predict_radial_newlegend_full(modeldata=NT_ezclass,dependent = "EZ_class",predictors =  "geom_NT_50m_avg_L300m_10deg",legend = makrolegend_gen2,doreturn=F)
+predict_radial_newlegend_full(modeldata=NT_ezclass,dependent = "EZ_class",predictors =  c("geom_NT_50m_avg_L300m_10deg","geom_NT_50m_avg_L1500m_4deg","geom_NT_50m_avg_L500m_10deg"),legend = makrolegend_gen2,doreturn=F)
+
 ```
 
 ### Terrain parameters- Q
@@ -182,6 +188,8 @@ print("SOUTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pEZ_class_mes_tpiterraintophat/",kk = 1:10,endround = 2,yrange = c(0.55,0.75),geheim = "cv_quality",error="cv_qualityerror")
 print("NORTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_EZ_class_terraincols//",kk = 1:10,endround = 5,yrange = c(0.55,0.75),geheim = "cv_quality",error="cv_qualityerror")
+predict_radial_newlegend_full_naomit(modeldata=NT_ezclass,dependent = "EZ_class",predictors =c("TPI_i0m_o200m_10m","profc_NT_50m_avg_ws750m","slope_NT_50m_avg_ws750m","crosc_NT_ws70m"),legend = makrolegend_gen2,doreturn=F)
+
 ```
 
 ##Meso scale GL2
@@ -192,6 +200,10 @@ print("SOUTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pEZ_class_mes_allgeoms/",kk = 1:10,endround = 2,yrange = c(0.55,0.65),geheim = "cv_quality",error="cv_qualityerror")
 print("NORTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_EZ_class_mes_geomcols/",kk = 1:10,endround = 5,yrange = c(0.55,0.65),geheim = "cv_quality",error="cv_qualityerror")
+predict_radial_newlegend_full_naomit(modeldata=NT_ezclassmes,dependent = "EZ_class_mes",predictors ="geom_NT_L500m_12deg",legend = mesolegend_gen2,doreturn=F)
+
+predict_radial_newlegend_full_naomit(modeldata=NT_ezclassmes,dependent = "EZ_class_mes",predictors =c("geom_NT_L500m_12deg","geom_NT_50m_avg_L1400m_10deg","geom_NT_L400m_4deg","geom_NT_50m_avg_L1500m_1deg"),legend = mesolegend_gen2,doreturn=F)
+
 ```
 
 ### Terrain parameters- Q
@@ -200,4 +212,6 @@ print("SOUTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pEZ_class_mes_tpiterraintophat/",kk = 1:10,endround = 2,yrange = c(0.3,0.70),geheim = "cv_quality",error="cv_qualityerror")
 print("NORTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_quality_5p_EZ_class_mes_terraincols//",kk = 1:10,endround = 5,yrange = c(0.3,0.7),geheim = "cv_quality",error="cv_qualityerror")
+predict_radial_newlegend_full_naomit(modeldata=NT_ezclassmes,dependent = "EZ_class_mes",predictors =c("TPI_i50m_o100m_10m","Slope_degree_10m","profc_NT_ws150m","maxic_NT_50m_avg_ws950m"),legend = mesolegend_gen2,doreturn=F)
+
 ```
