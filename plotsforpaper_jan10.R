@@ -15,7 +15,7 @@ MGL1_tn <- merge(x=MGL1,y=makroreddata[c("AufID","hillheight_vr1500_hr1000_t125"
 mGL1_tn <- merge(x=mGL1,y=mesoreddata[c("AufID","slope_ws7","General_Curvature","TPI_i0m_o120m_10m")],by="AufID",all.x=T)
 MGL2_tn <- merge(x=MGL2,y=makrodata[c("AufID","TPI_i0m_o900m","minic_ws15","crosc_ws11","hillheight_vr1500_hr1500_t200")],by="AufID",all.x=T)
 mGL2_tn <- merge(x=mGL2,y=mesodata[c("AufID","Topographic_Wetness_Index")],by="AufID",all.x=T)
-
+load("/home/fabs/Data/paper1_lenny/modeldata_SuedundNordtirol.RData")
 ##############################################################################################################################################################
 ##############################################################################################################################################################
 ##############################################################################################################################################################
@@ -74,7 +74,7 @@ plot(EZclassmesdata$EZ_class,las=2,names=c("FS","BS","SH"))
 ####SVG
 #svg(file="Distribution_topopositions.svg",onefile = T)
 par(pty="s")
-par(mar=c(2,3,2,1))
+
 par(mfrow=c(2,3))
 plot(KZmakdata$KZ_mak,las=2,names=c("SV","CH","SF","SS","SU","BS","SH","PL","RI","DF","DC","VF","TE","FS"))
 plot(makrodata_red$Def_red_mak,las=2,names=c("FL","BS","SH","RI","DA","LO","FS"))
@@ -84,8 +84,12 @@ plot(mesodata_red$Def_red_mes,las=2,names=c("FL","SF","SS","BS","SH","RI","DA","
 plot(EZclassmesdata$EZ_class,las=2,names=c("FS","BS","SH"))     
 #dev.off()
 
-
-
+#####Sued und nortirol
+#svg("Def_red_mak_SUEDUNDNORD.svg")
+par(mar=c(2,3,2,1))
+par(mfrow=c(1,2))
+plot(makrodata_red$Def_red_mak,las=2,names=c("FL","BS","SH","RI","DA","LO","FS"),ylim=c(0,600))
+plot(NT_makrored$Def_red_mak,las=2,names=c("FL","BS","SH","RI","DA","LO","FS"),ylim=c(0,600))
 
 #svg("barplot_correctclassification.svg",onefile = T,height=4,width=10)
 par(mfrow=c(1,4))
@@ -199,18 +203,34 @@ par(mfrow=c(1,1))
 boxplot(data=mGL2_tn,Topographic_Wetness_Index~ c_mGL2,ylim=c(0,20),notch=T)
 #dev.off()
 
-## Test for 2d-plot defredmak
+#svg("correct vs. wrong and Texture vs. hillheight.svg")
+par(mar=c(6,6,3,3))
 plotdata <- MGL1_tn[MGL1_tn$c_MGL1 %in% c(0,6),]
-plotdata$col <- as.factor(plotdata$c_MGL1)
-plot(plotdata$hillheight_vr1500_hr1000_t125,plotdata$Texture,col=plotdata$col,pch=3)
+plotdata[plotdata$c_MGL1 == 0,"col"] <- "red"
+plotdata[plotdata$c_MGL1 == 6,"col"] <- "blue"
+plot(y=plotdata$hillheight_vr1500_hr1000_t125,x=plotdata$Texture,col=plotdata$col,pch=3,ylab="hillheight",xlab="Texture")
+legend("topleft",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"),cex=0.5)
+#dev.off()
+
+#svg("correct vs. wrong and crosssectional curvature vs. normalized height.svg")
+par(mar=c(6,6,3,3))
+plotdata <- MGL1_tn[MGL1_tn$c_MGL1 %in% c(0,6),]
+plotdata[plotdata$c_MGL1 == 0,"col"] <- "red"
+plotdata[plotdata$c_MGL1 == 6,"col"] <- "blue"
+plot(y=plotdata$Normalized_Height,x=plotdata$crosc_DTM_50m_avg_ws5,col=plotdata$col,pch=3,ylab="norm. Height",xlab="crosc")
+legend("topleft",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"),cex=0.5)
+#dev.off()
 
 
-# Test for 2d-plot ezclass
+svg("MGL1 correct vs. wrong and tpi vs. minic.svg")
+par(mar=c(6,6,3,3))
 plotdata <- MGL2_tn[MGL2_tn$c_MGL2 %in% c(0,6),]
-plotdata$c_MGL2 <- as.factor(plotdata$c_MGL2)
+plotdata[plotdata$c_MGL2 == 0,"col"] <- "red"
+plotdata[plotdata$c_MGL2 == 6,"col"] <- "blue"
 str(plotdata$c_MGL2)
-plot(plotdata$TPI_i0m_o900m,plotdata$minic_ws15,col=plotdata$c_MGL2,pch=3)
-legend("bottomright",legend=c(0,6),pch=3,col=c(0,6))
+plot(plotdata$TPI_i0m_o900m,plotdata$minic_ws15,col=plotdata$col,pch=3)
+legend("bottomright",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"))
+
 require(scatterplot3d)
 plotdata$pcol[plotdata$col == "0"] <-"red"
 plotdata$pcol[plotdata$col == "6"] <-"blue"
@@ -233,7 +253,7 @@ predictors=c("Texture","hillheight_vr1500_hr1000_t125", "Normalized_Height")
 plot(plotdat)
 
 ##plot for stepwise forward selection; ALSO TEST IF ONE_SE_RULE IS IMPLEMENTED RIGHTLY
-svg("stepwiseselection.svg")
+#svg("stepwiseselection.svg")
 source("/home/fabs/Data/paper1_lenny/fabians_and_rossiters_functions.R")
 mypath="/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mak_allterrain/";kk = 1:10;endround = 10;yrange = c(0.4,0.6);error="cverror";geheim="geheimerprederror"
 xrange <- c(1,endround)
@@ -257,4 +277,4 @@ lines(1:endround,vcpreds$meanprederror,type="b",col="black",lwd=3)
 #lines(1:endround,vcpreds$se_upper,type="l",col="black",lty=1)
 one.se.rule <- vcpreds[vcpreds$meanprederror==min(vcpreds$meanprederror),"standard.error"] + min(vcpreds$meanprederror)
 lines(x=1:endround,y=rep(one.se.rule,times=endround),lwd=1)
-dev.off()
+#dev.off()
