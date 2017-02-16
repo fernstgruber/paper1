@@ -14,6 +14,43 @@ load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/mesomakrolege
 load("/home/fabs/Data/paper1_lenny/modeldata_SuedundNordtirol.RData")
 ```
 
+##Overview South Tyrol
+
+```{r,echo=F}
+CM <-as.matrix(table(ST_makrored$Def_red_mak))
+CM<- as.data.frame(CM)
+names(CM) <- "abs"
+CM$percent <- CM$abs/sum(CM$abs)*100
+print(CM)
+print(paste("Nr. of points at macro scale GL1 in SouthTyrol: ",sum(CM$abs)))
+
+CM <-as.matrix(table(ST_mesored$Def_red_mes))
+CM<- as.data.frame(CM)
+names(CM) <- "abs"
+CM$percent <- CM$abs/sum(CM$abs)*100
+print(CM)
+print(paste("Nr. of points at meso scale GL1 in SouthTyrol: ",sum(CM$abs)))
+```
+
+##Overview North Tyrol
+
+```{r,echo=F}
+CM <-as.matrix(table(NT_makrored$Def_red_mak))
+CM<- as.data.frame(CM)
+names(CM) <- "abs"
+CM$percent <- CM$abs/sum(CM$abs)*100
+print(CM)
+print(paste("Nr. of points at macro scale GL1 in SouthTyrol: ",sum(CM$abs)))
+
+CM <-as.matrix(table(NT_mesored$Def_red_mes))
+CM<- as.data.frame(CM)
+names(CM) <- "abs"
+CM$percent <- CM$abs/sum(CM$abs)*100
+print(CM)
+print(paste("Nr. of points at meso scale GL1 in SouthTyrol: ",sum(CM$abs)))
+```
+
+
 ##Macro scale GL1
 ### Geomorphons - UA
 
@@ -56,8 +93,8 @@ print("SOUTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mes_tpiterrain/",kk = 1:10,endround = 10,yrange = c(0.4,0.65),geheim = "geheimerprederror",error="prederror")
 predict_radial_newlegend_full(modeldata=ST_mesored,dependent = "Def_red_mes",predictors = c("TPI_i0m_o70m_10m","slope_DTM_50m_avg_ws3") ,legend = ,mesolegend_gen1,doreturn=F)
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mes_allterrain/",kk = 1:10,endround = 10,yrange = c(0.4,0.65),geheim = "geheimerprederror",error="prederror")
-print("NORTH TYROL")
 predict_radial_newlegend_full(modeldata=ST_mesored,dependent = "Def_red_mes",predictors =c("crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5"),legend = ,mesolegend_gen1,doreturn=F)
+print("NORTH TYROL")
 evaluateforwardCV_anyerror("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/svm_fw_UA_5p_Def_red_mes_terraincols/",kk = 1:10,endround = 5,yrange = c(0.4,0.65),geheim = "geheimerprederror",error="prederror")
 predict_radial_newlegend_full_naomit(modeldata=NT_mesored,dependent = "Def_red_mes",predictors =  c("TPI_i0m_o100m_10m","slope_NT_ws30m","crosc_NT_ws70m"),legend =mesolegend_gen1,doreturn=F)
 ```
