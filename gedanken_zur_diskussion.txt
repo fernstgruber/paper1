@@ -24,6 +24,15 @@ Model parameters: window size: 135 m, slope thresholds: 2–10°, curvature thre
 For example, slope thresholds, subdividing backslope units from ridges and valleys, depend on the local characteristics of the landform, i.e. the gradient of the slopes and valleys. Global thresholds, as used in the presented technique, are regarded as producing poor results
 he results show that it is possible to derive land elements for steepland areas based on geometry and landscape context using a relatively simple model. 
 
+Barka et al: Of the alorithms analysed in the presented work, Barka et al investigated the best parameter combinations based on the kappa statistic comparing the landform classification with forest and soil type mapes for Wood's and the TPI-based classification algorithm.
+Setting Wood: slope threshold 1°, curv tolerance 0.002 and window size 170m
+Setting Dikau: The classification of landforms elements according to Dikau [5] was not able to identify bottoms of wider
+valleys (wie bei uns )The best threshold value of curvature tolerance in testing regions and DEMs was 0.003
+Setting TPI: r1 100m and r2 900m
+Method of J. Wood is the most promising algorithm for classification of landforms for forestry and pedological
+predictive mapping. It is highly configurable and this increases its applicability in different types of relief.
+
+Bolongaro Crevenna:central mexico; Each calculated morphometric class was compared with the relief visualized on an altitudinal 3D-DEM. The best fit occurred with slope tolerance values of 68 and convexity tolerance values of 1x10^-4. Compared the classes with manually delineated geomorphological map
 Schaetzl: wird dcatena wo zietiert?
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
@@ -33,3 +42,6 @@ UNBEDINGT BODEN REINBRINGEN
 Dann: welche issues und mögliche verbesserungen
 aus Schmidt and Hewitt:
 A series of issues have been identified that could be used to improve the methodology, including (a) spatially variable scale, (b) locally adaptive thresholds, (c) improved modelling of landscape position, (d) better rules describing neighborhood relationships and geomorphometric context, and (e) the form and connectivity constraints of land elements. These issues are discussed in the following paragraphs.
+
+
+SLOPE: compared to values found in literature, the slope thresholds in our analysis are much higher.
