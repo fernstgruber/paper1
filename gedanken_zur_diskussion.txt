@@ -36,10 +36,9 @@ Bolongaro Crevenna:central mexico; Each calculated morphometric class was compar
 Schaetzl: wird dcatena wo zietiert?
 #DEFAULT SETTINGS
 ##SAGA:
-fuzzy: slope: 5 - 15
-curv: 0.000002; 0.00005
+fuzzy: slope: 5 - 15; curv: 0.000002 (500,000 m) to  0.00005 (20,000 m)
 TPi-based: r1=100m, r2=1000m
-CurvClass: curv: 0.0005
+CurvClass: curv: 0.0005 (2,000 m)
 
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
