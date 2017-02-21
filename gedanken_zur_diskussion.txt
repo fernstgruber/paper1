@@ -33,12 +33,20 @@ Method of J. Wood is the most promising algorithm for classification of landform
 predictive mapping. It is highly configurable and this increases its applicability in different types of relief.
 
 Bolongaro Crevenna:central mexico; Each calculated morphometric class was compared with the relief visualized on an altitudinal 3D-DEM. The best fit occurred with slope tolerance values of 6 degrees and convexity tolerance values of 1x10^-4. Compared the classes with manually delineated geomorphological map
+
 Schaetzl: wird dcatena wo zietiert?
+
 #DEFAULT SETTINGS
 ##SAGA:
 fuzzy: slope: 5 - 15; curv: 0.000002 (500,000 m) to  0.00005 (20,000 m)
 TPi-based: r1=100m, r2=1000m
 CurvClass: curv: 0.0005 (2,000 m)
+
+Ehsani und Quiel 2008:The 10 SOM classes are then characterized by morphometric postion and slope ranges slope threshold=1 and curvature threshold 0.0005 (through visual inspection) gut für die beschriebung von Wood!!! slope thresholds: gentle 5° moderate 5-8 steep 8-12 very steep >12; Most of the study area is characterized by mountain ranges stretching from southeast to northwest; SRTM
+
+Dragut and Blaschke :Slope gradients less than 2° are defined as “flat areas”, while higher than 45° as “steep slopes”. These two values are the only “crisp” values in the classification system. Study area 1 comprises two communities from the Transylvanian Plain in central area of Romania (Fig. 4). The second study area is located within the German part of the Eastern Alps. Poor transferability is also generally stated for most pixelbased remote sensing classifications (Townshend et al.,2000).The ease of modifying protocols enables object-based algorithms to perform more accurately than other techniques when transferred from one geographical area to another. By using relative values, the same classification model is transferable between datasets from various geomorphologic regions.
+
+ICH: Landform classifications should always be calibrated, as the aim may very well lead to different thresholds, and the perception of "flat" and "sloping" in an Alpine environment differs from that in a an environment dominated by gentle slopes and plains. Though a "comprehensive" landform classification may seem appealing, the authors are of the opinion that the systematics of landforms is not only a function of scale and the geomorphologic region, but also of the aim or scientific area of interest.
 
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
