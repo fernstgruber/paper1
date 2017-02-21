@@ -34,6 +34,13 @@ predictive mapping. It is highly configurable and this increases its applicabili
 
 Bolongaro Crevenna:central mexico; Each calculated morphometric class was compared with the relief visualized on an altitudinal 3D-DEM. The best fit occurred with slope tolerance values of 6 degrees and convexity tolerance values of 1x10^-4. Compared the classes with manually delineated geomorphological map
 Schaetzl: wird dcatena wo zietiert?
+#DEFAULT SETTINGS
+##SAGA:
+fuzzy: slope: 5 - 15
+curv: 0.000002; 0.00005
+TPi-based: r1=100m, r2=1000m
+CurvClass: curv: 0.0005
+
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
 UNBEDINGT BODEN REINBRINGEN
