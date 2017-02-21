@@ -16,7 +16,7 @@ Discussion.The examination of the defuzzified classifications identified resolut
 
 Hughes et al: 
 As the major aim of the DTM is to identify hillslope elements, we regard an interpolated grid resolution of 15 m as adequate to represent those structures. window of 9 × 9 cells, 
-A hillslope position index (Schmidt and Hewitt, 2004) was used in combination with slope gradient and curvature to define land elements. The land elements used have been applied successfully to soil-landscape modelling of steeplands in the Canterbury foothills, New Zealand (Schmidt et al. 2005b)
+A hillslope position index (Schmidt and Hewitt, 2004) was used in combination with slope gradient and curvature to define land elements. The land elements used have been applied successfully to soil-landscape modelling of steeplands in the Canterbury foothills, New Zealand (Schmidt et al. 2005b) ; acuh keine threshold angabe
 
 Schmidt and Hewitt:
  A DTM of 15-m grid size 
@@ -48,6 +48,13 @@ Dragut and Blaschke :Slope gradients less than 2° are defined as “flat areas�
 
 ICH: Landform classifications should always be calibrated, as the aim may very well lead to different thresholds, and the perception of "flat" and "sloping" in an Alpine environment differs from that in a an environment dominated by gentle slopes and plains. Though a "comprehensive" landform classification may seem appealing, the authors are of the opinion that the systematics of landforms is not only a function of scale and the geomorphologic region, but also of the aim or scientific area of interest.
 
+Herbst et al 2012:  Herbst et al 2012 present a geomorphographic terain classification for a decision-based model for the prediction of forest soil properties in Switzerland. This approch combines modeled and defined terrain attributes with expert knowledge and local mapping experience and the authors conclude that the resulting landforms are essential predictors with stronger relation to soil properties than automatically delineated landforms. However, the mid-slopes still pose a challenge with regards to modeling their influence on soil properties.
+
+Hoersch et al 2002: analysed vegetation distribution in an arean with high topographic gradients ind the Walli\ Swiss Alps, applying Dikuas CC. KEINE ANGABE des curv-thresholds
+
+Jasciewisz und Stepinksi: Poland with a 30 m DE;, and L=1500 fl=1
+
+Kringer geomorphometry: use fuzzy memberhsip for slope between 0 and 5 for flat, 2, and 12 for moderate slope and 9 and 15 degrees for steep
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
 UNBEDINGT BODEN REINBRINGEN
