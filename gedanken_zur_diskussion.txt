@@ -32,7 +32,7 @@ Setting TPI: r1 100m and r2 900m
 Method of J. Wood is the most promising algorithm for classification of landforms for forestry and pedological
 predictive mapping. It is highly configurable and this increases its applicability in different types of relief.
 
-Bolongaro Crevenna:central mexico; Each calculated morphometric class was compared with the relief visualized on an altitudinal 3D-DEM. The best fit occurred with slope tolerance values of 68 and convexity tolerance values of 1x10^-4. Compared the classes with manually delineated geomorphological map
+Bolongaro Crevenna:central mexico; Each calculated morphometric class was compared with the relief visualized on an altitudinal 3D-DEM. The best fit occurred with slope tolerance values of 6 degrees and convexity tolerance values of 1x10^-4. Compared the classes with manually delineated geomorphological map
 Schaetzl: wird dcatena wo zietiert?
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
