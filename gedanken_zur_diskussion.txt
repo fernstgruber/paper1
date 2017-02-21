@@ -4,7 +4,9 @@ Englisch & Killian:  auch 2° for flat areas,5 for schwachgeneigt,10 mäßig gen
 Mishimye:The catchment generally has undulating topography with gentle to moderate slopes. 
 SRTM, ASTER GDEM, GEOEYE (based on 5m stereoimages);  ecognition
 The GEOEYE DEM (created from GeoEye stereo-images) was the most effective in producing land component boundaries that coincide with morphological discontinuities. 
-
+ 
+ adediran: isodata classifcation
+ 
 Arrell.
  Classification was performed at resolutions of 50, 100, 200 and 400 m. The coarser DEM resolutions were obtained by resampling the original 50 m DEM using a mean resampling method. Tables show the cluster means of gradient (tangent) and curvatures for the different landforms
 Interessant:Fig. 10. Resolution-based changes to ridge recognition.
