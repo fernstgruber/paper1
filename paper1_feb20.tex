@@ -1,0 +1,548 @@
+%\documentclass[preprint,12pt,authoryear]{elsarticle}
+\documentclass[final,1p,times,twocolumn,authoryear]{elsarticle}
+\usepackage{lineno,hyperref}
+\modulolinenumbers[5]
+
+\journal{Journal of \LaTeX\ Templates}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%% Elsevier bibliography styles
+%%%%%%%%%%%%%%%%%%%%%%%
+%% To change the style, put a % in front of the second line of the current style and
+%% remove the % from the second line of the style you would like to use.
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Numbered
+%\bibliographystyle{model1-num-names}
+
+%% Numbered without titles
+%\bibliographystyle{model1a-num-names}
+
+%% Harvard
+\bibliographystyle{model2-names.bst}\biboptions{authoryear}
+
+%% Vancouver numbered
+%\usepackage{numcompress}\bibliographystyle{model3-num-names}
+
+%% Vancouver name/year
+%\usepackage{numcompress}\bibliographystyle{model4-names}\biboptions{authoryear}
+
+%% APA style
+%\bibliographystyle{model5-names}\biboptions{authoryear}
+
+%% AMA style
+%\usepackage{numcompress}\bibliographystyle{model6-num-names}
+
+%% `Elsevier LaTeX' style
+%\bibliographystyle{elsarticle-harv}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{algorithms vs. surveyors: a comparison of automated landform delineations and surveyed landform position in an Alpine environment}
+
+
+%% Group authors per affiliation:
+\author{Fabian E. Gruber\fnref{myfootnote}}
+\author{Jasmin Baruck\fnref{myfootnote}}
+\author{Clemens Geitner\fnref{myfootnote}}
+
+\address{University of Innsbruck}
+
+\begin{abstract}
+Landform delineation has been used in digital soil mapping to infer soil-relevant information. While its potential as an environmental variable in soil parameter modeling has been investigated for various automated landform delineations, little research has been invested into the relationship between the delineation of landforms by algorithms based on digital terrain models and the perception of landforms by the soil surveyor during field work.
+While some automated classification partly resemble the surveyors classification of topographic position, considerable research remains in order to explain the lack of reproducibility of surveyor position. Unfinished.
+\end{abstract}
+
+\begin{keyword}
+landform delineation, topographic position, automated landform classification, soil profile site description.
+\end{keyword}
+
+\end{frontmatter}
+
+\linenumbers
+
+\section{Introduction}
+Topography has always been acknowledged as an important control on the formation and, hence, distribution of soil. Consequently, soil description guidelines for soil classification schemes require the characterization of landform and topography of soil profile sites. For instance, when following the FAO guildines for soil description, topography is described using the four categories major landform, relative position of the site within the landscape, slope form and slope angle \citep{FAO2006}. Similarily, the Austrian \citep{Nestroy2011} as well as the German soil classification and mapping manuals \citep{ArbeitsgruppeBoden2006} require the measurement of slope angle and a description of the landform on which the soil profile site is located at three different (macro, meso and micro, relative to the surrounding 100 to 500 m, 50 to 100 m and 5 to 10 m, respectively) scales \citep{Englisch1998}. The various landform and slope position descriptions are usually performed by the surveyor while at location, supported by topographic maps,possibly aerial photographs, and based on expert rule sets and as well as the surveyor's mental soil landscape model. 
+
+Readily available digital terrain models (DTMs) of increasing resolution have led to reasearch into landform modeling and the segmentation or stratification  of DTMs into landform units. Approaches vary from expert-based rulesets to completely automated landform classifications, from supervised to unsupervised classifications, and include classifications with crisp as well as fuzzy borders.  The output units may be attributed with the names of landforms as mapped by a surveyor, but can also represent elementary land units that adhere to certain geometric constraints. Similar to the information required of the soil surveyor (slope angle and landform), the input variables for DTM-based landform classifications range from local terrain variables, such as slope and curvature, to regional variables like catchment area, which further describe a profile site's position in the landscape.
+
+An early example of the local terrain variable approach was  proposed by \cite{Dikau1988}, who  combined plan and profile curvature as well as the radius of curvature to create a map of form elements. \cite{Pennock1987} describe a similar landform element classification based on plan and profile curvatures. Adressing the problem of appropriate scale, \cite{Wood1996} presented another approach based on slope and multiple curvature calculations to model 6 morphometrics features, and added the possibility to calculate the terrain parameters at different scales, i.e. at different window sizes. A similar analysis with regard to curvature and slope was performed by \cite{Blaszczynski1997}.  \cite{Minar2008} proposed a concept of elementary landforms on the basis of homogeneous areas  of  altitude and its derivatives, seperated by lines of discontinuity.  
+
+Another branch of landform classifications applies not only local, but also regional terrain attributes \citep{Gallant2000} that include information on the surrounding area of a central pixel. \cite{Schmidt2004} extendet Dikau's form elements by means of fuzzy classification and  introduced landscape context into the classification scheme by implementation of the TOP HAT approach \citep{Rodriguez2002} to additionally distinguish between valleys and hills.  Similarily, \cite{MacMillan2000a} proposed a landform element classification based on heuristic rules and fuzzy logic. Therein, the landform elements of \cite{Pennock1987} are classified based on a semantic input model, and landscape context is added via terrain parameters that describe each cells slope position relative to its watershed. \cite{Hollingsworth2006} is an example for an application of regional terrain parameters in landform classification that can be linked to the hydrological regime, as they use the Static Wetness Index in their decision tree based land unit mapping approach. \cite{Weiss2000} proposed an automated landform classification by combining the Topographic Position Index (TPI), which compares the elevation of a pixel to that of surrounding pixels, at large and small scale. Involving the surrounding landscape at a given search radius,r.geomorphons \citep{Jasiewicz2013} represents a classification based on line-of-sight calculations and pattern recognition.
+
+The previously mentioned landform classification approaches have in common that the resulting classes  are attributed names which have specific implications regarding the description or characterisation of each landform element. A different approach is unsupervised classification, wherein an algorithm seperates the grid cells into classes that may or may not be afterwards provided with a name attribute related to landforms. Instead of organising a map according to certain heuristic rules, unsupervised classifications create groups of grid cells that are similar with regard to certain terrain parameters, but the group boundaries are not constrained by any existing classification system. \cite{Irvin1997} compared the results of a crisp and a continuous clustering algorithm with regard to manually delineated landforms.  While \cite{Adediran2004}, \cite{Arrell2007} and \cite{Burrough2000a}  similarily applied clustering of terrain derivatives with regard to landforms, \cite{Moravej2012} based their clusters not on the terrain attributes but on their first principle components. A different unsupervised approach is that of  \cite{Iwahashi2007}, who applied a nested-means partitioning algorithm to delineate terrain types or surface-form classes.
+
+Yet another approach to landform delineation is derived from object-based image analysis (OBIA), its principles applied to geographic information science are described by \cite{Blaschke2014}. It differs to the previously described approaches, as in a first step homogenous areas with regard to certain terrain parameters are segmented, which can later be aggregated and classified into landfrorm elements. \cite{Dragut2006} classified landform elements similar to the concepts of \cite{Dikau1988} and \cite{Pennock1987} by applying OBIA  to a group of terrain parameters which has been used in many landform classification attempts, i.e. slope, plan and profile curvature, and  elevation. \cite{Gercek2011}, \cite{Mashimbye2014} and \cite{Kringer2009}  provide further examples of the application of OBIA to landform delineation, the latter for use in soil mapping procedures.
+
+Geomorphology may be the main subject of interest for automated landform classification, nonetheless the relationship between landforms and soil has long been of strong scientific interest, consequently leading to research into classifying landforms for soil mapping purposes \citep{Schmidt2004,Herbst2012,Hughes2009, Barringer2008}. \cite{MacMillan2000a} well illustrate how different landforms can be interpreted in terms of soil formation and erosion, and the concept of the catena in soil science \citep{Schaetzl2013} shows the importance of topographic position in pedogenesis. Many have highlighted the importance of topography as a soil forming factor especially in Alpine areas \citep{Geitner2011,Herbst2012}. Consequently, it seems important, especially for future research, to consolidate the perception of topographic position in field soil survey on the one side and digital terrain analysis on the other, in order to advance the understanding of the interdependencies between soil and topography.
+
+The aim of this study is to test various landform classification algorithms with regard to their suitability to emulate the mental soil-landscape model of soil surveyors, especially with regard to the concept of topographic position.
+
+The investigated algorithms were restricted to supervised classifications implemented in the readily available Open Source geographic information systems (GIS) GRASS GIS and SAGA GIS. Publications presenting new landform classifcation approaches commonly measure the performance of their classification by visual or statistical comparison to thematic maps or correlation with metric parameters such as soil depth. Although some classifications have been compared with the results of different algorithms, and \cite{Barka2011} compared a number of automated landform classification algorithms with regard to correlation with soil and forest units, to our knowledge there has been no systematical comparison to point classifications by surveyors. 
+ 
+In this study we compare the classifications computed with readily available algorithms to the topographic positions of numerous soil profile sites in South Tyrol (Italy) as mapped by the surveyors. The Alpine environment of this research area presents an additional challenge to automated landform classification, as most previous studies have concentrated on areas suited for agriculture, thus having significantly less distinguished elevation differences as well as slope gradients. For each algorithm, a stepwise forward feature selection using support vector machines (SVMs) is applied to derive the parameter combination of each classification algorithm best suited to classify the landscape according to the surveyors mental model. Additionally, we examine how changes to the individual model parameters effect the distribution of landform classes and how they are attributed to the various topographic positions. Applying a feature selection procedure further allows to investigate whether a multi-scale approach is beneficial for any of the different landform classifications. By additionally applying this procedure to single terrain derivatives, we investigate how combinations of these derivative compare to automated classifications and highlight those terrain parameters and landform classifications that contribute most to the description and seperation of landforms and slope positions.
+\section{Material and Methods}
+\subsection{Forestry Service point data set}
+The point data set used in this study was provided by the Department of Forestry Planning of the Autonomous Province Bolzano, South Tyrol (Italy). The data set includes 1968 points with known coordinates (Figure \ref{fig:datapoints}), spread over all of South Tyrol, ranging from the colline to the alpine elevation zone. Nevertheless, the flat valley bottoms are underrepresented in the data set, as they are used for agriculture and orchards rather than forestry, which is restricted to slopes and higher altitudes.
+\begin{figure}
+\includegraphics[width=\textwidth]{suedtirol.eps}
+\caption{Map of South Tyrol showing the locations of the soil profile sites of the Forestry Service data set. }
+\label{fig:datapoints}
+\end{figure}
+ This point data set is the result of  various projects of the Forestry Departement, the most substantial part coming from the Forestry Survey \citep{APB2006}. Additionally to the silvicultural description of each site, the data set contains a soil profile description for most of the points. Part of the soil profile site information is a description of the topographic position. Figure \ref{fig:hist} shows the distribution of profile sites' topographic positions at different levels of generalisation for macro and meso scale.
+
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{Distribution_of_topographic_position_EDITED.pdf}
+\caption{Distribution of the topographic positions of the profile site data points at macro (A,B,C) and meso (D,E,F) scale. The histograms on the left show the detailed topographic positions from the survey, while B, C and E,F show generalisation levels 1 and 2 at macro and meso scale, respectively. See Tables \ref{table:topopositions} and \ref{table:generalisations} for the abbreviations of topographic position. }
+\label{fig:hist}
+\end{figure}
+
+
+1668 profile descriptions include  the topographic position at macro scale, 1468 at meso scale and only 108 additionally provide information on micro-scale topographic variabilty. The survey was performed adhering to the Forestry Survey Manual \citep{Englisch1998}, where the classes for the topographic position at macro and meso scale are mostly the same, with the difference that the former is attributed to the area within 100 to 500 m of the soil profile site, while the latter is judged based on the topography of the area within 50 to 100 m. For this study, the topographic position classes were further generalized into fewer classes to simplify  analysis. For generalisation level (GL) 2, data points from classes with very few members were left out or included into different classes. Table \ref{table:topopositions}gives an overview of the original classes of the Forestry Survey, and Table \ref{table:generalisations} describes several generalisations applied in this study.
+\begin{table}[!htbp]
+\caption{Overview of the topographic positions and their description for the surveyor (according to \cite{Englisch1998})}
+\begin{center}    \begin{tabular}{  p{4cm} c p{9cm} }
+	\hline\hline
+	Topographic position & Abbrev. & description for surveyor \\ \hline
+	plane &EF& expanded flat area  \\ 
+	locally flat &LF&	small flat area  \\
+	valley floor &VF& flat area bounded by upward slopes  \\
+	\raisebox{-0ex} {terrace} &\raisebox{-0ex}{TE} & flat area bounded by one upward and one downward slope  \\ 
+	plateau &PL& flat area bounded by downward slopes  \\ 
+	depression &DE& circular concave landform  \\ 
+	pan &PA& oval concave landform  \\ 
+	channel &CH& Elongated concave landform  \\ 
+	shoulder &SH& convex landform with erosion dominating  \\ 
+	footslope &FS& concave landform with accumulation dominating  \\ 
+	backslope &BS& erosion equals accumulation  \\ 
+	slope steepening &SS& slope bounded by areas with lesser slope gradient  \\ 
+	slope flattening &SF& slope bounded by areas with larger slope gradient  \\ 
+ 	summit &SU& circular convex landform  \\ 
+	ridge &RI& oval convex landform  \\ 
+	rampart &RA& elongated convex landform  \\ 
+	toeslope &TS& concave transition from footslope to flat  \\ 
+	debris fan &DF& gently sloping mound from gulley accumulation  \\ 
+	debris cone &DC& Steep sloping mound from gulley accumulation  \\ 
+	interchanging gulleys and ridges &\raisebox{-1.5ex} {GR} & \raisebox {-1.5ex} {interchanging gulleys and ridges}  \\
+	secondary valley flanks &\raisebox{-1.5ex}{SV}& \raisebox{-1.5ex}{secondary valley flanks}  \\ 
+    \end{tabular}
+\end{center}	
+\label{table:topopositions}
+\end{table}
+
+\begin{table}[!htbp]
+\caption{The topographic positions as mapped by the surveyor were reclassified to investigate whether different classifications improve the investigation of the differentiating parameters. FL = flat, LO = hydrologically low area, DA = debris accumulation; See Table \ref{table:topopositions} for further abbreviations. }
+\begin{center}
+    \begin{tabular}{  p{2.5cm} c  c  c  c }
+	\hline\hline
+	Topographic position & macro gen. 1 & macro gen. 2 & meso gen. 1 & meso gen. 2 \\ \hline
+	EF & FL & - & FL & -\\ 
+	LF & FL & - & FL & -  \\ 
+	VF & FL & FS & FL & FS \\ 
+	TE & FL & - & FL & - \\ 
+	PL & FL & SH & FL & SH \\ 
+	DE & LO & - & LO & - \\ 
+	PA & LO & - & LO & - \\ 
+	CH & LO & CH & LO & - \\ 
+	SH & SH & SH & SH & SH \\ 
+	FS & FS & FS & FS & FS \\ 
+	BS & BS & BS & BS & BS \\ 
+	SS & - & - & SS & - \\ 
+	SF & - & - & SF & - \\ 
+ 	SU & RI & SH & RI & SH \\ 
+	RI & RI & SH & RI & SH \\ 
+	RA & RI & - & RI &	- \\ 
+	TS & FS & FS & FS & FS \\ 
+	DF & DA & FS & DA & FS \\ 
+	DC & DA & FS & DA & FS \\
+	GR & - & - & - & - \\
+	SV & - & - & - & - \\ 
+    \end{tabular}
+    \label{table:generalisations}
+\end{center}
+\end{table}
+ 
+
+\subsection{Automated landform classification algorithms}
+The base input for the landform classification is the digital terrain model (DTM) with a grid size of 2.5 m, which is the result of an airborne laser scanning mission \citep{Wack2005}. It is freely available for download at the homepage of \cite{DTM}. For use in this study the DTM was resampled to 10 , 50, 100 and 150 m to consider the influence of scale. The methodology was not applied to the original DTM due to computational limits regarding such a regional approach. The following automated landform classificatin algorithms were performed on these DTMs applying a wide range of parameter settings:
+\paragraph{Dikau's curvature classification \citep{Dikau1988}}
+Dikau's proposition of a geomorphographic system of classifying landforms includes a classification of landform elements based on horizontal and vertical curvature. Depending on whether a grid cell is classified as convex, concave, or  planar with regard to these two directions, it is given membership to one of nine classes of landform element types. This classification is implemented in the SAGA Tool 'Curvature Classification'. The threshold value for distinguishing between planar and convex or concave is the only parameter open to variation. \cite{Hoersch2002} used this approach to correlate topography with the spatial distribution of vegetation. \cite{Jasiewicz2013} evaluated and compared their landform classification algorithm “r.geomorphon” with Dikau's curvature classification.
+\paragraph{Wood's morphometric features \citep{Wood1996}}
+The calculation of this classification was performed using the algorithm implemented in the GRASS GIS 7  add-on “r.param.scale”.  For a chosen window size it computes a number of terrain parameters by fitting bivariate quadratic polynomials.  The classification of each grid cell into the classes planar, pit, channel, pass, ridge and peak is performed based on the parameters slope and curvature, specifically cross-sectional, longitudinal, maximum and minumum curvature. A variation of  the slope and curvature thresholds is possible for the classification into the six morphometric features.
+\cite{Bolongaro-Crevenna2005} applied Wood's morphometric features and compared the distribution of the morphometric features for traditionally mapped landforms in Morelos State, Mexico using double ternary diagrams. \cite{Ehsani2008} compared the results of Wood's classification algorithm with landform elements extracted using  an unsupervised Artificial Neural Networks agorithms based on the the same slope and curvature parameter maps. Both aforementioned studies discuss the choice of approriate thresholds for slope and curvature. \cite{Ehsani2009} extended their previous study  to include Landsat ETM+ bands in their analysis.  
+\paragraph{Fuzzy landform elements \citep{Schmidt2004}}
+While Dikau's curvature classification is based on local terrain parameters, \cite{Schmidt2004} extended this approach be evaluating the resulting form elements with regard to their landscape context.  Instead of horizontal curvature, tangential curvature is used for the classification of form elements in slopeing areas, analogous to Dikau's procedure, and maximum and minimum curvature are included for the classification of flat areas analogous to Wood's parametrization \citep{Wood1996}. Fuzzy classification is applied for differentiating sloped and flat areas as well as the different form elements. The fuzzy classification of these landform elements is implemented in the SAGA GIS tool “Fuzzy landform classification”. The parameters varied in the present study are the fuzzy classifiers for slope and curvatures. \cite{Schmidt2004} further present an extension of this approach involving landscape context by including a TOP HAT ridge and valley detection \citep{Rodriguez2002}  to differentiate the hillslope position of the landform elements into hill, hillslope and valley. These landform elements have been used in modeling rooting depth \citep{Schmidt2004} and in  soil-landscape modeling \citep{Schmidt2005}. \cite{Hughes2009} applied  the landform elements for modeling the distribution of loess in North Otago, New Zealand, with promising results regarding primary loess. Mokkaram et al. (2005) compare this fuzzy classification of slope and curvatures to TPI-based landforms, with regard to their relationship to the units of a geological map.
+\paragraph{Topographic position index (TPI) and TPI-based landform classification \citep{Weiss2000}}
+The TPI is defined as the difference between the elevation of a central grid cell and the mean elevation of the surrounding grid cells with any given search radius and thus defines the relative position of the grid cell along a topographic gradient \citep{Guisan1999}. \cite{Weiss2000} developed a system that classifies a grid cell into one of ten landform classes based on the combination of a large scale TPI and a small scale TPI, i.e. one with a large and one with a small search radius.  On its own, the TPI has been applied in different fields, for instance \cite{Gercek2010} used the TPI in an object-based approach to delineate landform elements for mapping land management, while \cite{Reu2013} analyse its application in an geoarcheological setting. While \cite{Mokarram2015} compared TPI-based landforms to Schmidt's fuzzy landforms, \cite{Barka2011} analysed the TPI-based landform classification as well as other landform classifications with regards to  soil and forest units.
+\paragraph{Geomorphon-based landform classification \cite{Jasiewicz2013}}
+This pattern recognition – based landform classification is implemented through the GRASS GIS 7 add-on “r.geomorphon”. It performs line-of-sight calculations in the direction of the 8 neighboring grid cells.  Depending on whether the line-of-sight ends downwards,  upwards, or in the flat, this direction is attributed “-”,”+” or “0”, respectively.  Based on this ternary pattern, each grid cell can be classified as one of ten landform elements. The two parameters considered in this research are the search distance (L), up to which the line-of-sight computations are performed as well as the slope angle (flat) that constitutes the threshold up to which a direction is classified as flat. 
+
+\subsection{Statistical methods}
+The extraction of the parameters of each classification that result in a landform classifications that best corresponds to that of the surveyor, was performed by applying support vector machine classification in a forward stepwise feature selection procedure.
+\paragraph{Support vector machine classification}
+SVM classification was introduced by \cite{Cortes1995} as a binary classifier. The basic idea is to find a hyperplane that best seperates the points of two classes by maximizing the margin between those points of both classes that are closest to each other, called support vectors. A tuning parameter $C$ allows for certain violations of this margin, thus increasing the number of support vectors by those points that are on the "wrong" side of this (soft) margin. This simple approach for linear boundaries is extended to the nonlinear case using kernels to increase the feature space. For this study, SVM classification was performed using the "e1071" package \citep{meyer2014} of the statistical computing environment R \citep{cran2014} with a radial kernel and 10-fold cross-validation. Multiclass-classification applies a one-against-one approach, thus fitting each class against each other and then attributing the appropriate class to each point. Examples for consideration and application of SVMs with regard to soil mapping are \cite{Ballabio2009}, \cite{Behrens2006} and \cite{Rossel2010}.
+\paragraph{Parameter selection procedure} For each group of automated landform classifications as well as one group of single local and regional terrain parameters, the best fitting parameter combination was investigated by applying a stepwise forward selection approach. In a first step, the parameter combination that on its own best fits the surveyor's classification was chosen based on minimum classification error. In the next step each of the remaining parameter combinations were added to the model to find the combination that best improved the original (single parameter combination) model. Ten-fold cross validation was performed for each step as well as for the entire parameter selection procedure. The meaningfulness of this feature addition was evaluated using the "one-standard-error-rule" \citep{James2013}. 
+Quality measure hier noch erklaeren!
+\section{Results}
+\subsection{Dikau's curvature classification}
+Dikau's landform element classification scheme produces a map containing the classes V/V, GE/V, X/V, V/GR, GE/GR, X/GR, V/X, GE/X, X/X, where the first letter describes the profile curvature as being convex (X), concave (V) or elongated (GE), while the second letter of the class name describes the planar curvature as planar (GR), X or V.
+
+\begin{table}[!htbp]
+\caption{Accuracy values of  Dikau's curvature classification maps computed  with the best parameter setting for each topographic position at macro scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = DTM resolution,tc = curvature threshold for plane, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{3.2cm}|rrrrrrrr}
+  \hline
+setting at GL 1 & FL & LO & DA & FS &  BS  & SH & RI & Ov \\ 
+  \hline
+res=100m tc=0.006  & \raisebox{-0ex}{0.00} & \raisebox{-0ex}{0.49} & \raisebox{-0ex}{0.20} & \raisebox{-0ex}{0.00} & \raisebox{-0ex}{0.81} & \raisebox{-0ex}{0.00} & \raisebox{-0ex}{0.37} & \raisebox{-0ex}{0.49}\\ 
+ \hline
+ setting at GL 2 & CH &  &  & FS &  BS  & SH &  & Ov \\ 
+  \hline
+\raisebox{-1.5ex}{res=100m tc=0.006} & \raisebox{-1.5ex}{0.28}  &  &  & \raisebox{-1.5ex}{0.14} &   \raisebox{-1.5ex}{0.87} & \raisebox{-1.5ex}{0.22} &  & \raisebox{-1.5ex}{0.47} \\ 
+\raisebox{-0.5ex}{plus} & \raisebox{-1.5ex}{0.33}  &  &  & \raisebox{-1.5ex}{0.09} &   \raisebox{-1.5ex}{0.78} & \raisebox{-1.5ex}{0.39} &  & \raisebox{-1.5ex}{0.49} \\ 
+\raisebox{0.5ex}{res=250m tc=0.0016}  &  &  &  &  &    &  &  &\\
+  \hline
+\end{tabular}
+\label{table:dikau_macro}
+\end{table}
+ At macro scale , the single curvature classification map that best represents the surveyors topographic position at both levels of generalisation is based on the 100 m DTM and applies a curvature threshold for plane of 0.006. At generalisation level 1, the map results in a cross validated overall accuracy of 45\% whith the landform elements GE/GR being mapped to the topographic position BS, while the classes GE/V and VV are attributed to the position LO, V/GR to FS and the classes GE/X, X/GR and X/X to the topographic position RI. The position FL, DA and SH are not mapped in this parameter setting and most of the members of the classes LO, FS,SH and RI are misclassified as BS, which dominates the resulting landform classification. At a DTM resolution of 10m the position BS is distributed over all of the classes of the curvature classification, leading to all of these classes being attributed to the class BS. With increasing grid cell size the dominance of the curvature class GE/GR increases and the overall number of mapped curvature classes decreases, resulting in the misclassification of most topographic positions as BS.  The dominance of BS persists at generalisation level 2, where this parameter setting leads to a cross-validated accuracy of 47\% due to the reduction of topographic position classes. An increase of plane threshold leads to a reduction of mapped curvature classes, resulting in a decline in correctly classified SH positions, while a decreasing threshold leads to a more balanced distribution of curvature classes, increasing the misclassification of the less dominant topographic position classes to BS. At GL1 the addition of a further predictor mapset with a different parameter setting leads to no substantial increase in the correct classification rate of surveyed topographic position. However, at GL2 the addition of a map based on the coarsest DTM at grid cell size  250 m and a plane threshold of 0.0016 enhances the overall correct classification rate to 49\% due to increased classification of CH and SH at the expense of the accuracy of FS and BS. Table \ref{table:dikau_macro} gives a summary of the results at macro scale.
+At meso scale topographic position, a similar plane threshold (0.007) returned the best results, however at a finer DTM resolution of 50 m. The curvature classes GE/GR, GE/V, GE/X, V/GR, V/X, X/GR and X/V are all mapped to the topographic position BS, whereas only. Only the more extreme curvature combinations V/V and X/X are mapped to different topographic positions, LO and RI respectively. As is the case at macro scale, an increase in DTM resolution leads to a more diverse distribution of the points with a backslope position amongst the curvature classes, and consequently decreases the landform classifications ability to distinguisch the backslope position from the other topographic positions.  At GL 2  a smaller plane threshold of 0.003 was chosen as the best parameter setting. This however results in a map which only maps BS and SH as topographic positions, with X/X being the only curvature class not mapped to BS. While the addition of the map based on the 100 m DTM and a plane threshold of 0.01 increases the overall accuracy by only 1\% to 61\%, it does lead to the inclusion of the class FS into the resulting map of topographic positions. Table \ref{table:dikau_meso} gives an overview of the best parameter settings at meso scale.
+\begin{table}[!htbp]
+\caption{Accuracy values of  Dikau's curvature classification maps computed  with the best parameter setting for each topographic position at meso scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = DTM resolution,tc = curvature threshold for plane, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{3cm}|rrrrrrrrrr}
+  \hline
+Setting at GL 1 & FL & LO & DA & FS & SF & BS & SS & SH & RI & Ov \\ 
+  \hline
+
+{res=50m tc=0.007} & {0.00} & {0.26} &{0.00} & {0.00} & {0.00} & {0.93} & {0.00} & {0.0} & {0.21} & {0.47} \\ 
+plus res=100m tc=0.006 & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.24} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.01} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.91} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.10} & \raisebox{-1.5ex}{0.33} & \raisebox{-1.5ex}{0.49} \\
+ \hline
+ Setting at GL 2 &  &  &  & FS &  & BS & & SH &  & Ov \\ 
+ \hline
+\raisebox{-0ex}{res=50m tc=0.003} &  &  &  & \raisebox{-0ex}{0.00} &  & \raisebox{-0ex}{0.86} & & \raisebox{-0ex}{0.42} &  & \raisebox{-0ex}{0.60} \\ 
+plus res=50m tc=0.01&  &  &  & \raisebox{-1.5ex}{0.15} &  & \raisebox{-1.5ex}{0.84} & & \raisebox{-1.5ex}{0.44} &  & \raisebox{-1.5ex}{0.61} \\ 
+  \hline
+\end{tabular}
+\label{table:dikau_meso}
+\end{table}
+\subsection{Wood's morphometric features}
+Wood's landform classification algorithm yields a map containing the six morphometric features planar, pit, channel, pass, ridge and peak. 
+At macro scale and GL 1, the parameter setting that returns the classification which best corresponds to the surveyed classes is based on the 50 m DTM, a window size of 250 m, a curvature threshold of 0.002 and a slope threshold of 14 degrees. This however results in a map containing only the morphometric features channel, planar and ridge, which are consequently mapped to the surveyed topographic positions LO, BS, and RI, while all other positions are not recreated. An increase in window size only leads to further misclassification to the position BS, decreasing the number of points mapped to the position LO and eliminating all RI positions. A reduction of window size or, similarily, an increase in DTM resolution leads to an increase in the number of morphometric features. As a consequence, points with the topographic position BS are more evenly distributed on the different morphometric features, diminishing the maps ability to distinguish between BS and the other topographic positions, resulting in misclassification to the BS class. A reduction of the planar curvature threshold leads to similar results, while an increase leads to patterns similar to those associated with an increase in window size. While raising the slope threshold increases the number of points classified as BS at the cost of the remaining two classes LO and RI, a reduction leads to slightly less points classified as LO and a small increase of the proportion of the morphometric feature ridge. At GL 1, the addition of an additional parameter setting with a window size of 150 m, slope threshold of 8 degrees and a smaller curvature threshold of 0.00001, results in a minor increase of the overall accuracy to 47\%, but improves the number of topographic positions mapped by introducing the position FL. At GL 2, the single map with the best correct classification rate of 48\% is the same as at GL1, classifying the points into 3 out of 4 possible  topographic positions while leaving out FS. Introducing an additional map based on a larger window size (1250 m) and a smaller curvature threshold (0.007) adds the topographic position FS to the output, increasing overall accuracy to 51\%.
+\begin{table}[!htbp]
+\caption{Accuracy values of  Wood's parametric feature maps computed  with the best parameter setting for each topographic position at macro scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = grid cell size, ws = window size, ts = slope threshold tc = curvature threshold, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{2.8cm}|rrrrrrrr}
+  \hline
+setting at GL 1 & FL & LO & DA & FS &  BS  & SH & RI & OCR \\ 
+  \hline
+res=50m ws=250m ts=14 tc=0.002 & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.39} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.80} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.36} & \raisebox{-1.5ex}{0.46}  \\ 
+ \hline
+ setting at GL 2 & CH &  &  & FS &  BS  & SH &  & OCR \\ 
+  \hline
+res=50m ws=250m ts=14 tc=0.002 & \raisebox{-1.5ex}{0.4}  &  &  & \raisebox{-1.5ex}{0.00} &   \raisebox{-1.5ex}{0.80} & \raisebox{-1.5ex}{0.34} &  & \raisebox{-1.5ex}{0.48} \\ 
+plus res=50m ws=1250m ts=14 tc=0.007 & \raisebox{-1.5ex}{0.4}  &  &  & \raisebox{-1.5ex}{0.19} &   \raisebox{-1.5ex}{0.74} & \raisebox{-1.5ex}{0.41} &  & \raisebox{-1.5ex}{0.51} \\ 
+  \hline
+\end{tabular}
+\label{table:wood_macro}
+\end{table}
+
+At meso scale GL 1, two parameter settings tied with regard to best overall cross-validated accuracy at 47\%. While both only predict the topographic positions LO, BS and RI, the setting with  larger window size (150 m compared to 110 m), higher slope threshold (13 compared to 11) and lower curvature threshold (0.004 compared to 0.006)performed slightly better for the position RI, whereas the other setting performed slightly better for LO and BS (table \ref{table:wood_meso}). The effects of changes to the parameters window size as well as slope and curvature threshold are comparable to those at macro scale. Additional parameters sets yield no significant improvement.
+
+\begin{table}[!htbp]
+\caption{Accuracy values of  Wood's parametric feature maps computed  with the best parameter setting for each topographic position at meso scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = grid cell size, ws = window size, ts = slope threshold tc = curvature threshold, OCR = Overall correct classification rate}
+\centering
+\begin{tabular}{p{2.8cm}|rrrrrrrrrr}
+  \hline
+ & FL & LO & DA & FS & SF & BS & SS & SH & RI & OCR \\ 
+  \hline
+res=10m ws=110m ts=11 tc=0.006 & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.39} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.90} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.25} & \raisebox{-1.5ex}{0.47} \\ 
+ \hline
+  Setting at GL 2 &  &  &  & FS &  & BS & & SH &  & OCR \\ 
+  \hline
+ res=10m ws=150m ts=15 tc=0.004 &  &  &  & \raisebox{-1.5ex}{0.17} &  & \raisebox{-1.5ex}{0.88} & & \raisebox{-1.5ex}{0.29} &  & \raisebox{-1.5ex}{0.59} \\ 
+  \hline
+\end{tabular}
+\label{table:wood_meso}
+\end{table}
+
+The reduction of the number of topographic positions to 3 at GL 2 results in a correct classification rate of 59\%, with the 10-fold cross validation not resulting in a clear victory of a specific parameter setting. The forerunners perform well at predicting the dominant class BS, and have problems predicting the two other classes, especially FS.
+
+\subsection{Fuzzy landform elements}
+Schmidt's fuzzy landform classification expands Dikau's curvature classification by introducing the terrain parameters minimum and maximum curvature and fuzzy membership functions. This results in a map where each grid cell is attributed one of the classes termed "foot hollow", "hollow", "shoulder hollow", "footslope", "back slope", "shoulder slope", "foot spur", "spur", "shoulder spur", "plain", "channel", "pit", "ridge", "saddle" and "peak".
+Regarding the topographic position at macro scale and GL 1, the parameter setting that produced the map that best corresponds to the surveyed position relied on the 150 m DTM and lower and upper slope thresholds for the semantic input models of 6 and 12 degrees, respectively. The thresholds for curvature that establish fuzzy membership to the classes straight and curved were chosen to be 0.0001 and 0.003. This parameter setting failed to reproduce correctly any of the data points of the classes DA and SH and achieved an overall accuracy of 48\%. The resulting map attributes the fuzzy class "plain" to the topographic position FL and the classes "foot hollow" and "hollow" to LO. The classes "foot slope" and "back slope" are mapped to the positions FS and BS, respectively, while the classes "spur", "shoulder spur","shoulder slope", "peak" and "pit" are assigned the topographic position RI. Reducing the DTM grid size to 50 m while maintaining the rest of the chosen parameters, increases the number of fuzzy classes eventually mapped to BS from one to nine, which decreases the topographic positions depicted in the resulting map to the positions FL, BS and RI. An increased grid cell size of 250 m further exagerates the membership of data points to the class BS. Changes of plus or minus 3 degrees to the slope thresholds lead to only slightly different results. A reduction of the lower curvature thresholds results in a slight shift of classification from BS to RI, whereas an increase thereof decreases the attribution of points to the classes RI, LO and FS due to misclassification to BS. Landform maps based on a larger upper curvature threshold hardly contain any landform classes except for BS, and to a much smaller extent FL and RI. The addition of a second predictor map based on the 50 m DTM, slope thresholds of 3 and 12, and curvature thresholds of 0.0008 and 0.006 returns the same overall classification rate but increases the number of correctly classified RI positions at the cost of correctly identied BS positions. At GL 2, the parameter setting that performed best, with a cross-validated accuracy of 53\%, is based on the 150 m DTM as well, but with a wider range of slope thresholds (3° and 21°) and a smaller range of curvature thresholds(0.001 and 0.0014). Superposition with a map based on a different parameter setting leads to no improvisation of overall accuracy nor the correct classification rate of individual classes.
+\begin{table}[!htbp]
+\caption{Accuracy values of  Schmidt's fuzzy element maps computed  with the best parameter setting for each topographic position at macro scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = DTM resolution, ts = slope thresholds, tc = curvature thresholds, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{2.8cm}|rrrrrrrr}
+  \hline
+setting at GL 1 & FL & LO & DA & FS &  BS  & SH & RI & Ov \\ 
+  \hline
+res=150m ts=6;12 tc=0.0001;0.003 & \raisebox{-1.5ex}{0.38} & \raisebox{-1.5ex}{0.36} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.32} & \raisebox{-1.5ex}{0.81} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.29} & \raisebox{-1.5ex}{0.49}  \\ 
+ \hline
+ setting at GL 2 & CH &  &  & FS &  BS  & SH &  & Ov \\ 
+  \hline
+res=150m ts=3;21 tc=0.001;0.0014 & \raisebox{-1.5ex}{0.42}  &  &  & \raisebox{-1.5ex}{0.34} &   \raisebox{-1.5ex}{0.70} & \raisebox{-1.5ex}{0.44} &  & \raisebox{-1.5ex}{0.53} \\ 
+  \hline
+\end{tabular}
+\label{table:fuzzy_macro}
+\end{table}
+
+At meso scale and GL 1 there is no dominant forerunner amongst the parameter setting, with several maps achieving similar overall accuracies of 48.6\%. The most frequently chosen setting of the cross validation process is based on the 50 DTM, a slope membership function that is based on the threshold values 3 and 21°, and relatively large curvature thresholds of 0.004 and 0.006, which are quite consistent in the cross validation process. The mapping of the fuzzy landforms to the topographic positions is comparable to that at macro scale, except that "plain" is mapped to LO instead of FL. Additionally, the topographic position classes SF and SS are not attributed any fuzzy landform classes. A smaller grid cell size of 10 m leads to the BS points being distributed over all fuzzy landform classes, resulting in all of them being mapped to the class BS. The reduction of DTM resolution leads to similar results, however, in this setting the reason is an output map that only contains a small number of different classes, dominantly "back slope" and, to a much smaller degree, "plain". Variation of curvature thresholds leads to comparable changes in landform distribution as at macro scale. At GL 2 the result of the cross validation process is similarily indecisive, with an accuracy of approximately 63\%. While the range of the slope thresholds is decreased due to a lower threshold value of 15°, both curvature thresholds are smaller than at GL 1, with 0.0002 and 0.002 as lower and upper boundaries, respectively. As with GL 1, additional parameter settings lead to no improvisation.
+\begin{table}[!htbp]
+\caption{Accuracy values of  Schmidt's fuzzy element maps computed  with the best parameter setting for each topographic position at meso scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = DTM resolution, ts = slope thresholds, tc = curvature thresholds, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{2.8cm}|rrrrrrrrrr}
+  \hline
+ & FL & LO & DA & FS & SF & BS & SS & SH & RI & Ov \\ 
+  \hline
+res=50m ts=3;21 tc=0.004;0.006 & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.48} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.12} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.90} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.26} & \raisebox{-1.5ex}{0.49} \\ 
+ \hline
+   Setting at GL 2 &  &  &  & FS &  & BS & & SH &  & Ov \\ 
+  \hline
+res=50m ts=15;21 tc=0.0002;0.002 &  &  &  & \raisebox{-1.5ex}{0.23} &  & \raisebox{-1.5ex}{0.87} & & \raisebox{-1.5ex}{0.38} &  & \raisebox{-1.5ex}{0.63} \\ 
+  \hline
+\end{tabular}
+\label{table:fuzzy_meso}
+\end{table}
+
+\subsection{TPI and TPI-based landform classification}
+The TPI-based landform classification based on the  classification table by \cite{Weiss2000} results in the map units "canyons", "midslope drainages", "upland drainages", "U-shape valleys", "plains", "open slopes", "upper slopes", "local ridges", "midslope ridges", "mountain tops". The cross-validation process at macro scale at GL 1 does not produce a single parameter setting decisivley better than others, but the best settings involved an inner search radius between 60 and 100 m and an outer radius between 250  and 350 m. All settings preferred the 10 m DTM. The single parameter combination that was most frequently at first place applied search radii of 70 and 250 m. This results in a cross-validated accuracy of 47.7\%, where the landform classes "canyons","midslope drainages" and "U-shape valleys" are mapped to the topographic position LO, "plains" is mapped to the position FL and "open slopes" to BS. While the topographic positions DA, FS and SH are not recreated using a single TPI-based landform classification, the surveyed position "RI" is represented by the landform classes "midslope ridges", "mountain tops" as well as "upper slopes". Both an increase and a decrease of the inner search radius lead to increased misclassification of points to "BS". The latter case leads to less mappings of landform classes to the topographic position LO, despite more points of the landform class "U-shape valley", the number of which strongly decreases with increasing inner search radius. Higher values for the outer TPI radius lead to more points being assigned to the landform class U-shape valleys, however, in this setting this landform class is mapped to the topographic position FS instead of LO. The cross-validation process does not imply a significant increase in overall accuracy through addition of a second landform classification based on a different parameter setting. At GL 2, the search radii chosen are both larger, being 150 and 700 m, and the computations are based on the 50 m DTM. The addition of a map based on a setting with an even larger range between the search radii (50 m and 200 m) improved the classification accuracy from 51 to 52\% by increasing the number of data points correctly mapped to the surveyed position FS and slightly decreasing the accuracy of the the three remaining positions.  
+\begin{table}[!htbp]
+\caption{Accuracy values of  TPI-based landform maps computed  with the best parameter setting for each topographic position at macro scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = DTM resolution, R1 = inner search radius, R2 = outer search radius, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{4.5cm}|rrrrrrrr}
+  \hline
+setting at GL 1 & FL & LO & DA & FS &  BS  & SH & RI & Ov \\ 
+  \hline
+\raisebox{-0ex}{res=10m R1=70m R2=250} & \raisebox{-0ex}{0.26} & \raisebox{-0ex}{0.43} & \raisebox{-0ex}{0.00} & \raisebox{-0ex}{0.00} & \raisebox{-0ex}{0.88} & \raisebox{-0ex}{0.00} & \raisebox{-0ex}{0.27} & \raisebox{-0ex}{0.48}  \\ 
+\hline
+ setting at GL 2 & CH &  &  & FS &  BS  & SH &  & OCR \\ 
+  \hline
+{res=50m R1=150m R2=700m} & \raisebox{-0ex}{0.32}  &  &  & \raisebox{-0ex}{0.28} &   \raisebox{-0ex}{0.81} & \raisebox{-0ex}{0.32} &  & \raisebox{-0ex}{0.51} \\ 
+{plus res=50m R1=50m R2=2000m} & \raisebox{-1.5ex}{0.28}  &  &  & \raisebox{-1.5ex}{0.54} &   \raisebox{-1.5ex}{0.76} & \raisebox{-1.5ex}{0.31} &  & \raisebox{-1.5ex}{0.52} \\ 
+  \hline
+\end{tabular}
+\label{table:tpi_macro}
+\end{table}
+
+At meso scale and GL 1, the feature selection procedure leads to the choice of the TPI-based landform classification map based on the 10 m DTM and inner and outer search radii of 50 and 90 m. In this setting, the members of the topographic position RI belong to the landform classes "midslope ridges", "mountain tops", and "upper slopes". The positions BS, FS,LO and FL are comprised of the landform classes "open slopes", "U-shape valleys", "canyons" and "plains", respectively. This setting leads to a cross-validated accuracy of 49\%, with the topographic posiitons SS, SH, SF,  and DA not being attributed any data points. Increasing the outer radius leads to an increasing number of landform classes, for instance involving data points classified as "local ridges", and a slightly more balanced distribution of the data points amongst the different landform classes. This however leads to more landform classes being incorrectly assigned to the topographic position BS. At the more generalized GL 2 with only three topographic positions, the accuracy is increased to 63\% based on the search radii 80 and 300 m. As is the case for GL 1, the introduction of a second parameter setting does not significantly improve the accuracy. 
+\begin{table}[!htbp]
+\caption{Accuracy values of  TPI-based landform maps computed  with the best parameter setting for each topographic position at meso scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = DTM resolution, R1 = inner search radius, R2 = outer search radius, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{2.8cm}|rrrrrrrrrr}
+  \hline
+ & FL & LO & DA & FS & SF & BS & SS & SH & RI & OCR \\ 
+  \hline
+{res=10m R1=50m R2=90m} & \raisebox{-1.5ex}{0.30} & \raisebox{-1.5ex}{0.32} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.13} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.93} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.30} & \raisebox{-1.5ex}{0.50} \\ 
+ \hline
+   Setting at GL 2 &  &  &  & FS &  & BS & & SH &  & OCR \\ 
+  \hline
+{res=10m R1=80m R2=300m} &  &  &  & \raisebox{-1.5ex}{0.39} &  & \raisebox{-1.5ex}{0.86} & & \raisebox{-1.5ex}{0.35} &  & \raisebox{-1.5ex}{0.63} \\ 
+  \hline
+\end{tabular}
+\label{table:tpi_meso}
+\end{table}
+\subsection{Geomorphon-based landform classification}
+The automated classification of DTMs with r.geomorphon returns a map of maximum 10 landform classes, i.e. flat, peak, ridge, shoulder, spur, slope, hollow, footslope, valley and pit. Similarily to other classification methods, all or only part of the available landform elements are mapped, depending on the research area's topography and the chosen algorithm parameters. 
+Regarding macro scale topographic position, the parameter and input combination that on its own best recreates the topographic positions from field survey at both levels of generalisation is based on the 50 m DTM, a search window (L) of 400 m and a flatness threshold of 10 degrees. The resulting landform element map can correctly classify 49\% and 52\% of the points at the generalisation levels 1 and 2, respectively. At level 1, a model of topographic position based on this parameter setting maps the landform elements flat to the surveyor's FL, footslope to DA,  hollow and valley to LO, slope to BS, and the elements peak, ridge, shoulder and spur to RI. No points are mapped to FS and SH, as the generated map mostly incorporates the former points into the BS class, and to a lesser degree, to LO, while the latter points are dominantly classified as BS and RI. Beside FS  and SH, RI also shows a strong overlap with BS.
+
+Regarding the effects of parameter variation, while a lower flatness threshold increases the amount of points classified as RI rather than BS, an increase in search window has the opposite effect and increases the misclassification of other topographic positions as BS. The addition of the results of a further classification based on a different set of parameters does not significantly improve overall accuracy. 
+Additionally to summarizing the performance at GL 1, Table \ref{table:geom_macro} shows how the reduced dataset and legend at generalisation level 2 slightly improve overall accuracy when applying the same parameter setting. The addition of a further landform element map based on a lower flatness threshold as well as a larger search radius increases the correct classification rate of RI and FS at the cost of BS.
+
+\begin{table}[!htbp]
+\caption{Accuracy values of geomorphon-based landform maps computed  with the best parameter setting for each topographic position at macro scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = DTM resolution, L = search radius, fl = flatness threshold, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{2.8cm}|rrrrrrrr}
+  \hline
+setting at GL 1 & FL & LO & DA & FS &  BS  & SH & RI & Ov \\ 
+  \hline
+res=50m fl=10 L=400m & \raisebox{-1.5ex}{0.38} & \raisebox{-1.5ex}{0.49} & \raisebox{-1.5ex}{0.20} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.81} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.37} & \raisebox{-1.5ex}{0.49}  \\ 
+ \hline
+ setting at GL 2 & CH &  &  & FS &  BS  & SH &  & Ov \\ 
+  \hline
+res=50m fl=10 L=400m & \raisebox{-1.5ex}{0.50}  &  &  & \raisebox{-1.5ex}{0.13} &   \raisebox{-1.5ex}{0.81} & \raisebox{-1.5ex}{0.36} &  & \raisebox{-1.5ex}{0.52} \\ 
+plus res=50m fl=1 L=1500m & \raisebox{-1.5ex}{0.50} &&& \raisebox{-1.5ex}{0.16} & \raisebox{-1.5ex}{0.80} & \raisebox{-1.5ex}{0.39}& & \raisebox{-1.5ex}{0.54} \\ 
+  \hline
+\end{tabular}
+\label{table:geom_macro}
+\end{table}
+
+At meso scale, the map with the lowest overall classification error rate at generalisation level 1 is based on the 10 m DTM, a search radius of 80 m and a flatness threshold of 8 degrees. Whereas at macro scale the threshold of 10 degrees was dominant amongst the maps with the highest correct classification rate, at meso scale 8° are preferred. In this setting the landform elements flat and valley are mapped to the topographic position LO, hollow and slope are mapped to BS, and footslope, ridge, shoulder and spur are mapped to RI. Again the dominant BS falsely incorporates a great amount of other classes, and FL, DA, FS, SF, SS and SH are not attributed any points by the model based on this map. The overall classification rate is comparable to the one at macro scale and generalisation level 1. A reduction of data points and number of classes according to generalisation level 2 leads to a correct classification rate of 62\% applying a flatness threshold of 8 degrees and a search window of 150 m to the 10 m DTM. The classification rate is improved to 64\% by adding the landform map based on the 50m DTM, a search radius of 250 m and a flatness threshold of 10 degrees. Table \ref{table:geom_meso} shows the accuracies of the best performing maps regarding meso scale.
+\begin{table}[!htbp]
+\caption{Accuracy values of geomorphon-based landform maps computed  with the best parameter setting for each topographic position at meso scale. "plus"  indicates that the parameter setting described is combined with the aforementioned parameter setting. res = DTM resolution, L = search radius, fl = flatness threshold, Ov = Overall accuracy}
+\centering
+\begin{tabular}{p{2.8cm}|rrrrrrrrrr}
+  \hline
+ & FL & LO & DA & FS & SF & BS & SS & SH & RI & Ov \\ 
+  \hline
+{res=10m fl=8 L=80m} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.17} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.92} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.38} & \raisebox{-1.5ex}{0.49} \\ 
+ \hline
+   Setting at GL 2 &  &  &  & FS &  & BS & & SH &  & Ov \\ 
+  \hline
+{res=10m fl=8 L=150m} &  &  &  & \raisebox{-1.5ex}{0.07} &  & \raisebox{-1.5ex}{0.90} & & \raisebox{-1.5ex}{0.39} &  & \raisebox{-1.5ex}{0.62} \\ 
+plus res=50m fl=10 L=250m &  &  &  & \raisebox{-1.5ex}{0.35} &  & \raisebox{-1.5ex}{0.86} & & \raisebox{-1.5ex}{0.39} &  & \raisebox{-1.5ex}{0.64} \\
+  \hline
+\end{tabular}
+\label{table:geom_meso}
+\end{table}
+\pagebreak
+\subsection{Terrain parameters}
+The same procedure that was applied for different parameter settings of each classification algorithm was performed for  numerous local and regional terrain parameters, similarily varying parameters such as grid size and search window. At macro scale and GL 1, the terrain parameter that on its own best reproduced the surveyed topographic positions using SVM classification was topographic wetness index, a regional terrain parameter relating a grid cell's catchment area to its slope. The resulting model correctly classifies 32\% of the topographic positions described as LO, 85\% of BS and 43\% of RI, which leads to an overall cross-validated accuracy of 48\% . The remaining positions FL, DA, FS, and SH are not attributed any data points in the resulting map, their members being misclassified as one the other three positions. Similar to the results of the investigated classification methods, misclassification to the topographic position BS was dominant. The addition of the terrain parameter profile curvature, calculated on the 50 m DTM and a window size of 350 m, improves the cross validated overall accuracy to 49.4\% by correctly classifying 38\% of the data points attributed to the topographic position FS. This parameter combination also introduces the missing topographic positions FL, DA and SH into the resulting maps. The addition of the terrain parameter minimum curvature based on the 50 m DTM and a window size of 250 m further strengthens the less common classes FL, LO and DA, increasing the overall cross validated accuracy to 50.6\%. At GL 2, the same set of predictors results in an overall accuracy of 59\%. Table \ref{table:terrain_macro} shows how additional terrain parameters improve the accuracy of the map based on the single best terrain parameter, topographic wetness index. Regarding the overall accuracy, the topographic position index with a search radius of 200 m based on the 10 m DTM performs similar to the topographic wetness index, however it fails to classify any data points as FS. 
+\begin{table}[!htbp]
+\caption{Correct classification rates for maps computed with different predictors sets of terrain parameters for each topographic position at macro scale with a radial kernel. At each generalisation level, the first row shows the results using only the best terrain parameter, whereas the terrain parameters in the rows below are subsequently added to the predictor set, consequently increasing the overall accuracy. res = DTM resolution,ws = window size, Ov = Overall accuracy}
+\centering
+\begin{tabular}{|p{4cm}|rrrrrrrr|}
+  \hline
+setting at GL 1 & FL & LO & DA & FS &  BS  & SH & RI & Ov \\ 
+  \hline
+topographic wetness index res=50m  & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.32} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.85} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.43} & \raisebox{-1.5ex}{0.48}  \\  
+plus profile curvature res=50m ws=350m  & \raisebox{-1.5ex}{0.06} & \raisebox{-1.5ex}{0.26} & \raisebox{-1.5ex}{0.02} & \raisebox{-1.5ex}{0.39} & \raisebox{-1.5ex}{0.84} & \raisebox{-1.5ex}{0.12} & \raisebox{-1.5ex}{0.40} & \raisebox{-1.5ex}{0.51}  \\ 
+plus minimum curvature res=50m ws=250m  & \raisebox{-1.5ex}{0.21} & \raisebox{-1.5ex}{0.37} & \raisebox{-1.5ex}{0.13} & \raisebox{-1.5ex}{0.38} & \raisebox{-1.5ex}{0.84} & \raisebox{-1.5ex}{0.13} & \raisebox{-1.5ex}{0.40} & \raisebox{-1.5ex}{0.53}  \\ 
+ \hline
+ setting at GL 2 & CH &  &  & FS &  BS  & SH &  & Ov \\ 
+  \hline
+topographic wetness index res=50m & \raisebox{-1.5ex}{0.21}  &  &  & \raisebox{-1.5ex}{0.08} &   \raisebox{-1.5ex}{0.81} & \raisebox{-1.5ex}{0.45} &  & \raisebox{-1.5ex}{0.51} \\
+plus profile curvature res=50m ws=350m& \raisebox{-1.5ex}{0.23}  &  &  & \raisebox{-1.5ex}{0.44} &   \raisebox{-1.5ex}{0.79} & \raisebox{-1.5ex}{0.46} &  & \raisebox{-1.5ex}{0.56} \\
+plus minimum curvature res=50m ws=250m & \raisebox{-1.5ex}{0.35}  &  &  & \raisebox{-1.5ex}{0.53} &   \raisebox{-1.5ex}{0.78} & \raisebox{-1.5ex}{0.47} &  & \raisebox{-1.5ex}{0.59} \\
+  \hline
+\end{tabular}
+\label{table:terrain_macro}
+\end{table}
+The terrain parameter that best represents the topographic positions at meso scale and GL 1 is the topographic position index based on the 10 m DTM and a search radius of 70 m, which results in mapping the topographic positions LO, BS, SH, and RI at an overall crossvalidated accuracy of 50\%. The best performing local terrain parameter is cross-sectional curvature at a window size of 50 m, which has a similar accuracy but does not map the class SH. The cross validated feature selection process implies that one additional terrain parameter should be added to the topographic position index. The parameter slope based on the 50 m DTM and a window size of 150 m introduceds the topographic positions FL, DA and FS to the output map of topographic positions. At GL 2, a topographic position index with a slightly larger search window of 90 m was selected as the single parameter best representing the 3 generalisations at meso scale. Table \ref{table:terrain_meso} shows how the addition of the terrain parameters topographic position index and slope recreate the topographic positions at the different generalisation levels at meso scale.
+\begin{table}[!htbp]
+\caption{Correct classification rates for maps computed with regional and local terrain parameters for each topographic position at meso-scale and with a radial kernel SVM. res = DTM resolution,r=radius, ws=search window size, topographic position index, OCR = Overall correct classification rate}
+\centering
+\begin{tabular}{p{3cm}|rrrrrrrrrr}
+  \hline
+Setting at GL 1 & FL & LO & DA & FS & SF & BS & SS & SH & RI & OCR \\ 
+  \hline
+{TPI res=10m r=70m} & {0.00} & {0.31} &{0.00} & {0.00} & {0.00} & {0.94} & {0.00} & {0.05} & {0.35} & {0.51} \\ 
+plus Slope res=50m ws=150m & \raisebox{-1.5ex}{0.45} & \raisebox{-1.5ex}{0.33} & \raisebox{-1.5ex}{0.25} & \raisebox{-1.5ex}{0.08} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.93} & \raisebox{-1.5ex}{0.00} & \raisebox{-1.5ex}{0.03} & \raisebox{-1.5ex}{0.35} & \raisebox{-1.5ex}{0.52} \\
+ \hline
+ Setting at GL 2 &  &  &  & FS &  & BS & & SH &  & OCR \\ 
+ \hline
+\raisebox{-0ex}{TPI res=10m r=90m} &  &  &  & \raisebox{-0ex}{0.14} &  & \raisebox{-0ex}{0.90} & & \raisebox{-0ex}{0.42} &  & \raisebox{-0ex}{0.64} \\ 
+plus slope res=50m ws=150m &  &  &  & \raisebox{-1.5ex}{0.32} &  & \raisebox{-1.5ex}{0.91} & & \raisebox{-1.5ex}{0.46} &  & \raisebox{-1.5ex}{0.68} \\ 
+  \hline
+\end{tabular}
+\label{table:terrain_meso}
+\end{table}
+\clearpage
+\subsection{Comparison of the best parameter settings}
+Table \ref{table:overall_comparison} gives an overview for how the different classification algorithms performed at different scales and generalisation levels.
+
+\begin{table}[ht]
+\caption{Cross-validated overall accuracy and (in brackets) kappa coefficient of the best representatives of each classification algorithm as well as the best performimg SVM-model based on a combination of single terrain parameters. }
+\centering
+\begin{tabular}{crrrr}
+  \hline
+Cross-validated overall accuracy & macro GL1 & macro GL2 & meso GL1 & meso GL2 \\ 
+  \hline 
+Dikau's curvature classification & 0.45 (0.16) & 0.47 (0.18) & 0.47 (0.12) & 0.60 (0.21) \\ 
+  Wood's morphometric features & 0.46 (0.18) & 0.48 (0.20) & 0.47 (0.14) & 0.59 (0.21) \\ 
+  Schmidt's fuzzy landform elements & 0.48 (0.25) & 0.53 (0.30) & 0.48 (0.19) & 0.63 (0.28) \\ 
+  TPI-based landforms & 0.47 (0.21) & 0.51 (0.26) & 0.50 (0.20) & 0.51 (0.32) \\ 
+  Geomorphon-based forms & 0.48 (0.25) & 0.52 (0.28) & 0.48 (0.15) & 0.62 (0.24) \\ 
+  Terrain parameters & 0.51 (0.32) & 0.57 (0.38) & 0.52 (0.25) & 0.66 (0.38) \\ 
+   \hline
+\end{tabular}
+\label{table:overall_comparison}
+\end{table}
+
+To compare the similarity of the best parameter settings of the different classification, the percentage of datapoints that were classified as the same topographic position, as well as Cohen's kappa, were calculated for each pair of algorithms (Table \ref{table:similarity_matrix}), generalisation levels and scale. 
+\begin{table}[ht]
+\caption{Similarity of the classification methods as described by the percentage of data points classified as the same topographic position at GL 1/GL 2.The values below the diagonal refer to meso scale, while those above represent macro scale. DCC = Dikau's curvature classification, WMF = Woods morphometric features, SFL = Schmidt's fuzzy landform elements, TBL = TPI-based landforms, GBF = geomorphon-based forms, TP = Terrain parameters}
+\centering
+\begin{tabular}{ccccccc}
+  \hline
+\%  & DCC & WMF &SFL &TBL & GBF & TP \\ 
+  \hline
+DCC &1 & 0.76/0.76 & 0.70/0.62 & 0.77/0.71 & 0.70/0.71 & 0.68 \\ 
+WMF &0.85/0.77  & 1 & 0.68/0.62 & 0.74/0.68 & 0.74/0.74 & 0.69/0.65 \\ 
+SFL & 0.83/0.90 & 0.89/0.75 & 1 & 0.70/0.64 & 0.67/0.63 & 0.70/0.66 \\ 
+TBL & 0.83/0.74 &0.82/0.76  &0.81/0.74  & 1 & 0.74/0.69 & 0.71/0.71 \\ 
+GBF &0.81/0.80  &0.82/0.81  & 0.80/0.79  & 0.82/0.77 & 1 & 0.66/0.66 \\ 
+TP &0.79/0.79  &0.79/0.79  &0.80/0.83  &0.90/0.80  &0.82/0.83  & 1 \\ 
+   \hline
+\end{tabular}
+\label{table:similarity_matrix}
+\end{table}
+
+\subsection{Differences in meso and macro scale } 
+In general, at macro scale the maps based on the 50m, and to a lesser degree on the 100m DTM, were preferred to those based on other resolutions, whether of higher or of lower resolution. At meso scale, maps based on the 10m DTM dominated the selection procedure. Hence the difference in scale between how topographic position is perceived by the surveyor at meso and macro scale can be recognized at the level of DTM resolution or search window size, depending on the classification algorithm.
+With geomorphons, the difference is basically the DTM, once at 50 m and then at 10 m, but both with a search window of 8 grid cells. With curvature classification the grid cell sizes are 100 and 50 m respectively, while the plane threshold of 0.006 and 0.007 is not that different
+
+\subsection{Data point analysis} 
+Given the results presented above called for an investigation into wether certain points were consistenly classified wrongly in all classification approaches or if the correct classification depends on the applied method. Figure \ref{fig:hist_correct_per_tp} shows the distribution of how often the various data points were classified correctly. It shows that those points that were either always classified correctly or always misclassified dominate. It also underlines the dominant role of the backslope position with regard to overall classification accuracy.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{nr_correct_barplotperposition_EDITED.pdf}
+\caption{At each scale and generalisation level, a barplot shows the distribution of the number of times a specific data point was classified correctly using the six different methods.}
+\label{fig:hist_correct_per_tp}
+\end{figure}
+
+
+\section{Discussion}
+All in all, the described methodology searches for parameter settings that best distinguish the topographic positions, leading to a trade-off between 1) landform maps with a large number of diverse classes where a dominant topographic position appropriates all modelled landform classes and 2) landform maps with very few modelled landform classes which are able to largely encompass the dominant topographic position but fail to differentiate the DTM enough to consider the less dominant topographic positions.
+This study shows, that in the Alpine context, especially with the main land use being forestry, the reconstruction of topographic positions described by surveyors using terrain derivatives and classification schemes based on these, is possible only to a certain degree. The various investigated classification algorithms performed similarily at the  macro scale with 7 classes and at meso scale with 9 classes, yielding overall accuracies of just around 50\%. Given the often mentioned importance of topography in the soil surveyors mental soil landscape model, it is surprising that the topographic positions cannot be better replicated using simple terrain parameters or existing landform classification algorithms. This raises several questions with regard to the reason for the presented results. The main issues that require discussion are (a) reliability of point data regarding their location, (b) subjectivity and interpretability of the topographic position description performed by the soil surveyor, and (c) the adequacy of the examined classification algorithms with regard to their application in an Alpine environment. 
+
+
+
+\subsection{Reliability of profile point localisation} 
+Figure \ref{fig:hist_correct_per_tp} shows that at macro scale and generalisation level 1 a substantial amount of points, consisting of almost a third of the data set, were misclassified in every single classification approach. However, the consistent choice of automated classifications based on coarser  DTM resolutions at macro scale than at meso scale indicates that there is no systematic error in the localisation of the profile sites. Otherwise the DTM resolution or chosen window size should show no correlation with the extents that are used in the survey manual to distinguish meso and macro scale. 
+Furthermore, the problem of no data in valley floor! Discussion also of the unexpectedly high slope thresholds!
+Given the overall unsatisfactory results, to ensure that the reason is not simply badly georeferenced profile sites, the procedure was repeated with data supplied by the North Tyrolean Forestry Service, where the survey data is more recent and the surveyors assured that the geographic location of the profile points hat been verified, and if necessary, corrected, after field work. Due to the necessary computational time, the procedure was peformed only at generalisation levels GL1 and only one automated classification method as well as the terrain parameter - based SVM-model. Due to the relatively good performance and only small number of variable parameters compared to the similarily performing fuzzy elements classification, the geomorphon-based classification method was chosen to represent the groups of automated classifications. Table \ref{table:ST_vs_NT} compares the data sets and the results of the two chosen classification methods. Assuming that the performance of the classifications in the data set from South Tyrol results from uncertainties regarding the site coordinates, a significantly better classification rate could be expected from the North Tyrolean data set. Given the absence of this difference....
+\begin{table}[ht]
+\caption{Comparison of the datasets from South and North Tyrol regarding the distribution of topographic positions (in percent) as well as the crossvalidated accuracy rate (CVA) quality (QU) of the models based on geomorphon-based landforms (GBF) and the combination of single terrain parameters.}
+\centering
+\begin{tabular}{|c|cc|cc|}
+  \hline
+   & \multicolumn{2}{c}{macro scale GL 1}  &\multicolumn{2}{|c|} {meso scale GL1}   \\ 
+   & South Tyrol & North Tyrol & South Tyrol & North Tyrol \\ 
+  \hline
+  nr of profiles & 1610 & 1245 & 1424 & 1229 \\ 
+ \% FL & 3.4 & 5 & 1.5 & 4.1 \\ 
+ \% LO & 12.9 & 15.1 & 7.4 & 5.6 \\ 
+ \% DA & 2.9 & 1.7 & 4.3 & 4 \\ 
+ \% FS & 10.7 & 16.7 & 7.1 & 7.9 \\ 
+ \% SF &  -  &  -   & 5 & 5.3 \\ 
+ \% BS & 39.3 & 29.8 & 44.2 & 32.6 \\ 
+ \% SS &  -  &  -   & 4.3 & 8.1 \\ 
+ \% SH & 6.1 & 8.8 & 7.4 & 16.8 \\ 
+ \% RI & 24.7 & 22.9 & 18.8 & 15.6 \\ 
+    CVA-GBF & 0.48 & 0.45 & 0.48 & 0.39 \\ 
+   CVA-TP & 0.51 & 0.51 & 0.52 & 0.45 \\ 
+    QU-GBF & 0.21 & 0.20 & 0.10 & 0.16 \\ 
+    QU-TP & 0.25 & 0.27 & 0.18 & 0.24 \\ 
+   \hline
+\end{tabular}
+\label{table:ST_vs_NT}
+\end{table}
+\subsection{Objectivity of topographic position description}
+Furthermore, the problem of no data in valley floor! Discussion also of the unexpectedly high slope thresholds!
+Dominance of BS compared to other classes...  The low overall classification rate can be attributed to the generally high rate of misclassifications of other positions as BS. Hier vielleicht der vergleich der Einschätzung der Hangneigung durch Kartierer und DGM? Maybe this is the surveyors "go-to class" when none of the other classes fits the topographic position adequately.
+\subsection{Performance of the different algorithm groups} 
+This comparison should include a statistical measure of association!
+
+All in all, the results of the FWS for woods was not as conclusive as those of some others, especially regarding the first selection at meso scale!
+\subsection{Comparison of chosen parameter values to the default values and literature} 
+
+
+
+\subsection{Support vector machine classification and parameter selection}
+With regard to modeling topographic position (being the ultimate goal, topgether with an advance in understanding the surveyors perception of landscape with regard to his soil landscape model), the result are more coherent? Paper von Martins kollege aus wien zitieren?
+As most landform classification algorithms in themselves already involve the classification and generalisation of various terrain paramers, the forward selection for the group of single terrain parameters showed a slight increase in correct classifications with added parameters. Regarding the automated classifications this was rarely the case, showing that when aiming to recreate topographic position at a specific scale, classification power is not increased by the addition of a result of the same classification scheme applying a different parameter setting or scale.
+Discussion of why overfitting is not what we seek: Aim is to find some basic knowledge regarding the perception of the landscape by the surveyor.
+
+
+\clearpage
+\section*{References}
+\bibliography{paper1_dec29.bib}
+
+\end{document}
