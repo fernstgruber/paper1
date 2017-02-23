@@ -1,7 +1,7 @@
 
 Englisch & Killian:  auch 2° for flat areas,5 for schwachgeneigt,10 mäßig geneigt
 
-Mishimye:The catchment generally has undulating topography with gentle to moderate slopes. 
+Mashimbye:The catchment generally has undulating topography with gentle to moderate slopes. 
 SRTM, ASTER GDEM, GEOEYE (based on 5m stereoimages);  ecognition
 The GEOEYE DEM (created from GeoEye stereo-images) was the most effective in producing land component boundaries that coincide with morphological discontinuities. 
  
@@ -59,6 +59,8 @@ Hoersch et al 2002: analysed vegetation distribution in an arean with high topog
 Jasciewisz und Stepinksi: Poland with a 30 m DE;, and L=1500 fl=1
 
 Kringer geomorphometry: use fuzzy memberhsip for slope between 0 and 5 for flat, 2, and 12 for moderate slope and 9 and 15 degrees for steep
+
+
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
 UNBEDINGT BODEN REINBRINGEN
