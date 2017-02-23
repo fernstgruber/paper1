@@ -45,6 +45,8 @@ Schaetzl: wird dcatena wo zietiert?
 fuzzy: slope: 5 - 15; curv: 0.000002 (500,000 m) to  0.00005 (20,000 m)
 TPi-based: r1=100m, r2=1000m
 CurvClass: curv: 0.0005 (2,000 m)
+##GRASS
+Wood: 0.0001 fpr curvature and 1 degree for slope
 
 Ehsani und Quiel 2008:The 10 SOM classes are then characterized by morphometric postion and slope ranges slope threshold=1 and curvature threshold 0.0005 (through visual inspection) gut für die beschriebung von Wood!!! slope thresholds: gentle 5° moderate 5-8 steep 8-12 very steep >12; Most of the study area is characterized by mountain ranges stretching from southeast to northwest; SRTM
 
