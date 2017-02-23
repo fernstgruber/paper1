@@ -60,7 +60,10 @@ Jasciewisz und Stepinksi: Poland with a 30 m DE;, and L=1500 fl=1
 
 Kringer geomorphometry: use fuzzy memberhsip for slope between 0 and 5 for flat, 2, and 12 for moderate slope and 9 and 15 degrees for steep
 
+Mokkaram 2015:  in their comparison of fuzzy landform classification and tpi - finde keine thresholds, is auch wirklich kein gutes paper
 
+Pennock et al 1987; A gradient of 3 ° was used to distinguish between backslope and level elements. The choice of 3 ~ as a gradient threshold was based on several published studies. Hier wird noch mehr zitiert. The criteria fbr the profile
+delineations are taken from Young (1972), who uses _+ 0.1 /m curvature to delineate moderately concave or convex slopes from those with slight curvatures. HOWEVER this was for a study area in hummocky terrain!
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
 UNBEDINGT BODEN REINBRINGEN
