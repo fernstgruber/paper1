@@ -80,6 +80,8 @@ SLOPE: compared to values found in literature, the slope thresholds in our analy
 compare to crisp thresholds, and for schmidt compare it with fuzzy memberships from literature
 
 Accuracy:
-Aus Congalton 1991:
+Aus Congalton 1991, hier kann ich mich an die Aufgliederung der probleme halten:
 - many zeroes in a CM may indicate an insufficient sample.
 - Kappa can be used to assess if one error matrix is significantly better than another (or better than randomness)
+- ground data collection: Assuming that the reference data is true, errors are linked to the classification process, often mistakenly lowering the classifcation accuracy. Therefore careful consideration of the accuracy of the reference data is essential!
+ -  classification scheme:
