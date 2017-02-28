@@ -79,7 +79,7 @@ A series of issues have been identified that could be used to improve the method
 SLOPE: compared to values found in literature, the slope thresholds in our analysis are much higher.
 compare to crisp thresholds, and for schmidt compare it with fuzzy memberships from literature
 
-Accuracy:
+Accuracy: A series of issues that may have influenced the poor accuracy values have been identified: (ab ground data)
 Aus Congalton 1991, hier kann ich mich an die Aufgliederung der probleme halten:
 - many zeroes in a CM may indicate an insufficient sample.
 - Kappa can be used to assess if one error matrix is significantly better than another (or better than randomness)
