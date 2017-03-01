@@ -68,8 +68,9 @@ Pennock et al 1987; A gradient of 3 ° was used to distinguish between backslope
 delineations are taken from Young (1972), who uses _+ 0.1 /m curvature to delineate moderately concave or convex slopes from those with slight curvatures. HOWEVER this was for a study area in hummocky terrain!
 
 Matsuura and Aniya:  present a slope segmentation algorith based on surface discontinuities, with which they attempt to immitate manual terrain recognition by humans. Applied D8 algorithm to follow steepest ascent and descent from pixel. DEM = 15 m, amaongst other 5 highrelief study areas in Shikoku Mountains.  Validation was performed with stratified-random-sampling grid by manual interpretation of slope contours by experts. As error assessment they give users and producers aggreement as well as overall agreement.
- As a flatness threshold they applied 2 degrees due 
-WICHTIG: They also indicate that high standard deviations in their users and producers aggreement are based on different criteria for defining slope segments  amonst the human interpreters!
+ As a flatness threshold they applied 2 degrees due to DEM  irregularieties. This threshold was also chosen in step 3 for finding breaklines!?
+WICHTIG: They also indicate that high standard deviations in their users and producers aggreement are based on different criteria for defining slope segments, especially the difference between lower, mid and upper slopes,   amonst the human interpreters!
+ICH: If this difference in criteria for slope segmentation is already obvious when analyzing contours,it is no surprise that these difference might get greater when the interpreter is in the field where his view is furthermore impaired by trees?!
 
 
 Discussion: Kurz zusammenfassen was versucht wurde, möcliche anwendund, sinn?
