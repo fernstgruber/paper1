@@ -7,6 +7,8 @@ The GEOEYE DEM (created from GeoEye stereo-images) was the most effective in pro
  
  adediran: isodata classifcation
  
+ Bocco et al 2001:  also applied 3 degrees as threshold for flat areas such as valleys and plains,  whereas for plateaus 6 degrees are chosen. ICH: They also applied a higher threshold for flat in mountains areas!
+ 
 Arrell.
  Classification was performed at resolutions of 50, 100, 200 and 400 m. The coarser DEM resolutions were obtained by resampling the original 50 m DEM using a mean resampling method. Tables show the cluster means of gradient (tangent) and curvatures for the different landforms
 Interessant:Fig. 10. Resolution-based changes to ridge recognition.
