@@ -73,7 +73,7 @@ Kringer geomorphometry: use fuzzy memberhsip for slope between 0 and 5 for flat,
 
 Mokkaram 2015:  in their comparison of fuzzy landform classification and tpi - finde keine thresholds, is auch wirklich kein gutes paper
 
-Pennock et al 1987; A gradient of 3 ° was used to distinguish between backslope and level elements. The choice of 3 ~ as a gradient threshold was based on several published studies. Hier wird noch mehr zitiert. The criteria fbr the profile
+Pennock et al 1987; A gradient of 3 ° was used to distinguish between backslope and level elements. The choice of 3 ~ as a gradient threshoPenncokld was based on several published studies. Hier wird noch mehr zitiert. The criteria fbr the profile
 delineations are taken from Young (1972), who uses _+ 0.1 /m curvature to delineate moderately concave or convex slopes from those with slight curvatures. HOWEVER this was for a study area in hummocky terrain!
 
 Matsuura and Aniya:  present a slope segmentation algorith based on surface discontinuities, with which they attempt to immitate manual terrain recognition by humans. Applied D8 algorithm to follow steepest ascent and descent from pixel. DEM = 15 m, amaongst other 5 highrelief study areas in Shikoku Mountains.  Validation was performed with stratified-random-sampling grid by manual interpretation of slope contours by experts. As error assessment they give users and producers aggreement as well as overall agreement.
