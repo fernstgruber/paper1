@@ -97,7 +97,7 @@ Accuracy: A series of issues that may have influenced the poor accuracy values h
 Aus Congalton 1991, hier kann ich mich an die Aufgliederung der probleme halten:
 - many zeroes in a CM may indicate an insufficient sample.
 - Kappa can be used to assess if one error matrix is significantly better than another (or better than randomness). BUT kappa assumes a multinomial sampling model (and only simple random sampoing satifies this assumption)
-- ground data collection: Assuming that the reference data is true, errors are linked to the classification process, often mistakenly lowering the classifcation accuracy. Therefore careful consideration of the accuracy of the reference data is essential!
+- ground data collection: Assuming that the reference data is true, errors are linked to the classification process, often mistakenly lowering the classifcation accuracy. Therefore careful consideration of the accuracy of the reference data is essential! 
  -  classification scheme: should be mutually exclusive and totally exhaustive, however this may not be the case for topographic positions! Shoudl also be hierarchical so that generalisations can be performed. This was attempted, but showed less increase in accuracy than expected. however Colgaton says that such artificial delineations often pose a problem
  - Spatial autocorrelation: does not appear to be a problem in the study?
  - Sample size: sufficient samples are necessary to give a representation of the confusion betewen differen classes. In the end, practical reasons play the most important role in sample size... Congaltons rule of thumb: min. 50 samples for each land use category for not too large areas.
