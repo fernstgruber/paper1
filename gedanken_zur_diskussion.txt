@@ -40,8 +40,6 @@ predictive mapping. It is highly configurable and this increases its applicabili
 
 Bolongaro Crevenna:central mexico; Each calculated morphometric class was compared with the relief visualized on an altitudinal 3D-DEM. The best fit occurred with slope tolerance values of 6 degrees and convexity tolerance values of 1x10^-4. Compared the classes with manually delineated geomorphological map
 
-Schaetzl: wird dcatena wo zietiert?
-
 #DEFAULT SETTINGS
 ##SAGA:
 fuzzy: slope: 5 - 15; curv: 0.000002 (500,000 m) to  0.00005 (20,000 m)
@@ -55,10 +53,17 @@ Ehsani und Quiel 2008:The 10 SOM classes are then characterized by morphometric 
 Dragut and Blaschke :Slope gradients less than 2° are defined as “flat areas”, while higher than 45° as “steep slopes”. These two values are the only “crisp” values in the classification system. Study area 1 comprises two communities from the Transylvanian Plain in central area of Romania (Fig. 4). The second study area is located within the German part of the Eastern Alps. Poor transferability is also generally stated for most pixelbased remote sensing classifications (Townshend et al.,2000).The ease of modifying protocols enables object-based algorithms to perform more accurately than other techniques when transferred from one geographical area to another. By using relative values, the same classification model is transferable between datasets from various geomorphologic regions.
 
 gercek et al: in their study, a slope threshold of 3 degrees was applied prior to calculating mean slope
+gar nicht so schlechte introduction: Classification based on general geomorphometry has a high degree of uncertainty in the
+semantic descriptions of landforms which makes a unique and unambiguous classification hardly possible (Schmidt and Hewitt 2004). A landform is ‘vague’ in the philosophical sense (Williamson 1994) and its description may vary according to perception. Another uncertainty comes from the indeterminate boundaries of landforms; terrain as a spatially
+continuous surface artificially delimited into units produces boundary conditions that are not distinct (Dehn et al. 2001, Fisher et al. 2004)
 
 ICH: Landform classifications should always be calibrated, as the aim may very well lead to different thresholds, and the perception of "flat" and "sloping" in an Alpine environment differs from that in a an environment dominated by gentle slopes and plains. Though a "comprehensive" landform classification may seem appealing, the authors are of the opinion that the systematics of landforms is not only a function of scale and the geomorphologic region, but also of the aim or scientific area of interest.
 
 Herbst et al 2012:  Herbst et al 2012 present a geomorphographic terain classification for a decision-based model for the prediction of forest soil properties in Switzerland. This approch combines modeled and defined terrain attributes with expert knowledge and local mapping experience and the authors conclude that the resulting landforms are essential predictors with stronger relation to soil properties than automatically delineated landforms. However, the mid-slopes still pose a challenge with regards to modeling their influence on soil properties.
+WICHTIG: SLOPES: All landforms that cannot be allocated to one of the other landform types or elements. übersicht über terrainparameterwerte in tabelle
+BEZPÜGLICH BACKSLOPE: Despite the differentiation into convex and concave slopes, slope ridges and flat
+slopes, mid slopes exhibited a high percentage of surface area.Future approaches could be improved by testing further segmentations of mid slopes by combining inclination and curvature criteria.
+REGIONAL/GEOLOGIC THRESHOLD VALUES!
 
 Hoersch et al 2002: analysed vegetation distribution in an arean with high topographic gradients ind the Walli\ Swiss Alps, applying Dikuas CC. KEINE ANGABE des curv-thresholds
 
