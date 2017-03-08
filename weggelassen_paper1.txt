@@ -1,0 +1,28 @@
+am 8. März 2017 - aus der Diskussion hinsichtlich der verlässlichekeit der punkte, der Nordtirol-Teil:
+Given the overall unsatisfactory results, to ensure that the reason is not simply badly georeferenced profile sites, the procedure was repeated with data supplied by the North Tyrolean Forestry Service, where the survey data is more recent and the surveyors assured that the geographic location of the profile points hat been verified, and if necessary, corrected, after field work. Due to the necessary computational time, the procedure was performed only at generalisation levels GL1 and only one automated classification method as well as the terrain parameter - based SVM-model. Due to the relatively good performance and only small number of variable parameters compared to the similarily performing fuzzy elements classification, the geomorphon-based classification method was chosen to represent the groups of automated classifications. Table \ref{table:ST_vs_NT} compares the data sets and the results of the two chosen classification methods. Assuming that the performance of the classifications in the data set from South Tyrol results from uncertainties regarding the site coordinates, a significantly better classification rate could be expected from the North Tyrolean data set. Given the absence of this difference....
+\begin{table}[ht]
+\caption{Comparison of the datasets from South and North Tyrol regarding the distribution of topographic positions (in percent) as well as the crossvalidated accuracy rate (CVA) quality (QU) of the models based on geomorphon-based landforms (GBF) and the combination of single terrain parameters.}
+\centering
+\begin{tabular}{|c|cc|cc|}
+  \hline
+   & \multicolumn{2}{c}{macro scale GL 1}  &\multicolumn{2}{|c|} {meso scale GL1}   \\ 
+   & South Tyrol & North Tyrol & South Tyrol & North Tyrol \\ 
+  \hline
+  nr of profiles & 1610 & 1245 & 1424 & 1229 \\ 
+ \% FL & 3.4 & 5 & 1.5 & 4.1 \\ 
+ \% LO & 12.9 & 15.1 & 7.4 & 5.6 \\ 
+ \% DA & 2.9 & 1.7 & 4.3 & 4 \\ 
+ \% FS & 10.7 & 16.7 & 7.1 & 7.9 \\ 
+ \% SF &  -  &  -   & 5 & 5.3 \\ 
+ \% BS & 39.3 & 29.8 & 44.2 & 32.6 \\ 
+ \% SS &  -  &  -   & 4.3 & 8.1 \\ 
+ \% SH & 6.1 & 8.8 & 7.4 & 16.8 \\ 
+ \% RI & 24.7 & 22.9 & 18.8 & 15.6 \\ 
+    CVA-GBF & 0.48 & 0.45 & 0.48 & 0.39 \\ 
+   CVA-TP & 0.51 & 0.51 & 0.52 & 0.45 \\ 
+    QU-GBF & 0.21 & 0.20 & 0.10 & 0.16 \\ 
+    QU-TP & 0.25 & 0.27 & 0.18 & 0.24 \\ 
+   \hline
+\end{tabular}
+\label{table:ST_vs_NT}
+\end{table}
