@@ -11,8 +11,10 @@ MGL1 <- datawithpreds[!(is.na(datawithpreds$c_MGL1)),]
 MGL2 <- datawithpreds[!(is.na(datawithpreds$c_MGL2)),]
 mGL1 <- datawithpreds[!(is.na(datawithpreds$c_mGL1)),]
 mGL2 <- datawithpreds[!(is.na(datawithpreds$c_mGL2)),]
-MGL1_tn <- merge(x=MGL1,y=makroreddata[c("AufID","hillheight_vr1500_hr1000_t125","Texture","crosc_DTM_50m_avg_ws5","TPI_i0m_o400m_10m","Normalized_Height","TPI_i0m_o250m_10m")],by="AufID",all.x=T)
-mGL1_tn <- merge(x=mGL1,y=mesoreddata[c("AufID","slope_ws7","General_Curvature","TPI_i0m_o120m_10m")],by="AufID",all.x=T)
+preds_MGL1_tn <- c("Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5","slope_ws15")
+MGL1_tn <- merge(x=MGL1,y=makroreddata[c("AufID","hillheight_vr1500_hr1000_t125","Texture","crosc_DTM_50m_avg_ws5","TPI_i0m_o400m_10m","Normalized_Height","TPI_i0m_o250m_10m","Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5","slope_ws15")],by="AufID",all.x=T)
+preds_mGL1_tn <-c("crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5")
+mGL1_tn <- merge(x=mGL1,y=mesoreddata[c("AufID","slope_ws7","General_Curvature","TPI_i0m_o120m_10m","crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5")],by="AufID",all.x=T)
 MGL2_tn <- merge(x=MGL2,y=makrodata[c("AufID","TPI_i0m_o900m","minic_ws15","crosc_ws11","hillheight_vr1500_hr1500_t200")],by="AufID",all.x=T)
 mGL2_tn <- merge(x=mGL2,y=mesodata[c("AufID","Topographic_Wetness_Index")],by="AufID",all.x=T)
 load("/home/fabs/Data/paper1_lenny/modeldata_SuedundNordtirol.RData")
@@ -222,7 +224,7 @@ legend("topleft",legend=c("always correct","always wrong"),pch=3,col=c("blue","r
 #dev.off()
 
 
-svg("MGL1 correct vs. wrong and tpi vs. minic.svg")
+#svg("MGL1 correct vs. wrong and tpi vs. minic.svg")
 par(mar=c(6,6,3,3))
 plotdata <- MGL2_tn[MGL2_tn$c_MGL2 %in% c(0,6),]
 plotdata[plotdata$c_MGL2 == 0,"col"] <- "red"
@@ -230,7 +232,7 @@ plotdata[plotdata$c_MGL2 == 6,"col"] <- "blue"
 str(plotdata$c_MGL2)
 plot(plotdata$TPI_i0m_o900m,plotdata$minic_ws15,col=plotdata$col,pch=3)
 legend("bottomright",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"))
-
+#################################################################testing 3d plots
 require(scatterplot3d)
 plotdata$pcol[plotdata$col == "0"] <-"red"
 plotdata$pcol[plotdata$col == "6"] <-"blue"
@@ -246,12 +248,12 @@ with(plotdata, {
                 zlab="TPI")
 })
 
-## Test for 3d-plot defredmak
+
 plotdata <- MGL1_tn[MGL1_tn$c_MGL1 %in% c(0,6),]
 plotdata$col <- as.factor(plotdata$c_MGL1)
 predictors=c("Texture","hillheight_vr1500_hr1000_t125", "Normalized_Height")
 plot(plotdat)
-
+#######################################################################################
 ##plot for stepwise forward selection; ALSO TEST IF ONE_SE_RULE IS IMPLEMENTED RIGHTLY
 #svg("stepwiseselection.svg")
 source("/home/fabs/Data/paper1_lenny/fabians_and_rossiters_functions.R")
@@ -278,3 +280,34 @@ lines(1:endround,vcpreds$meanprederror,type="b",col="black",lwd=3)
 one.se.rule <- vcpreds[vcpreds$meanprederror==min(vcpreds$meanprederror),"standard.error"] + min(vcpreds$meanprederror)
 lines(x=1:endround,y=rep(one.se.rule,times=endround),lwd=1)
 #dev.off()
+####################################################################SLOPE VS SLOPE
+source("/home/fabs/Data/paper1_lenny/fabians_and_rossiters_functions.R")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/relieflegends.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/mesomakrolegends.RData")
+load("/home/fabs/Data/paper1_lenny/modeldata_SuedundNordtirol.RData")
+ST_makrored$neigunggrad <- atan(ST_makrored$Neig/100)*180/pi
+NT_makrored$neigunggrad <- atan(NT_makrored$Neig/100)*180/pi
+
+fit <- lm(data=ST_makrored,neigunggrad~slope_ws3)
+print(summary(fit)$r.squared)
+fit <- lm(data=ST_makrored,neigunggrad~slope_ws5)
+print(summary(fit)$r.squared)
+fit <- lm(data=ST_makrored,neigunggrad~slope_ws7)
+print(summary(fit)$r.squared)
+fit <- lm(data=ST_makrored,neigunggrad~slope_ws11)
+print(summary(fit)$r.squared)
+fit <- lm(data=ST_makrored,neigunggrad~slope_ws15)
+print(summary(fit)$r.squared)
+###best result is with ws5 = 50m
+fit <- lm(data=ST_makrored,neigunggrad~slope_ws5)
+print(summary(fit)$r.squared)
+#svg("slope_vs_slope.svg")
+plot(ST_makrored$slope_ws5,ST_makrored$neigunggrad,pch=3,cex=0.5)
+lines(x=fit$model$slope_ws15,y=fit$fitted.values)
+#dev.off()
+########################################################################################TERRAIN PARAMETER STATS FOR TERRAIN PREDICTIONS OF TEST SET
+require(e1071)
+makromodeldata <- ST_makrored[c("Def_red_mak",preds_MGL1_tn)]
+svm_terrain_MGL1 <- svm(data=makromodeldata,Def_red_mak~. , cross=10) 
+print(summary(svm_terrain_MGL1)$tot.accuracy )
+makromodeldata <- 
