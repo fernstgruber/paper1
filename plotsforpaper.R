@@ -223,7 +223,7 @@ plot(y=plotdata$Normalized_Height,x=plotdata$crosc_DTM_50m_avg_ws5,col=plotdata$
 legend("topleft",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"),cex=0.5)
 #dev.off()
 
-#svg("correct vs. wrong and crosssectional curvature vs. Texture.svg")
+svg("correct vs. wrong and crosssectional curvature vs. Texture.svg")
 par(mar=c(6,6,3,3))
 plotdata <- MGL1_tn[MGL1_tn$c_MGL1 %in% c(0,6),]
 plotdata[plotdata$c_MGL1 == 0,"col"] <- "red"
@@ -241,6 +241,7 @@ plotdata[plotdata$c_MGL2 == 6,"col"] <- "blue"
 str(plotdata$c_MGL2)
 plot(plotdata$TPI_i0m_o900m,plotdata$minic_ws15,col=plotdata$col,pch=3)
 legend("bottomright",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"))
+#dev.off()
 #################################################################testing 3d plots
 require(scatterplot3d)
 plotdata$pcol[plotdata$col == "0"] <-"red"
