@@ -1,12 +1,14 @@
-source("/media/fabs/Volume/Data/temp_delilah/ST_landformclasses/ST_landforms_funcsandlegends/relief_legends.R")
-setwd("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/Rplots")
-#opar <- par()
-load(file="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/allmodeldataforSVM.RData")
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/makroreddata_andpredlists.RData")
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/mesoreddata_andpredlists.RData")
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/makrodata_andpredlists.RData")
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/mesodata_andpredlists.RData")
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/datawithpreds.RData")
+
+setwd("/home/fabs/Data/paper1_lenny/Rplots")
+load("/home/fabs/Data/paper1_lenny/relieflegends.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/allmodeldataforSVM.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/makroreddata_andpredlists.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/mesoreddata_andpredlists.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/makrodata_andpredlists.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/mesodata_andpredlists.RData")
+load("/home/fabs/Data/paper1_lenny/datawithpreds.RData")
+load("/home/fabs/Data/paper1_lenny/modeldata_SuedundNordtirol.RData")
+
 MGL1 <- datawithpreds[!(is.na(datawithpreds$c_MGL1)),]
 MGL2 <- datawithpreds[!(is.na(datawithpreds$c_MGL2)),]
 mGL1 <- datawithpreds[!(is.na(datawithpreds$c_mGL1)),]
@@ -14,10 +16,11 @@ mGL2 <- datawithpreds[!(is.na(datawithpreds$c_mGL2)),]
 preds_MGL1_tn <- c("Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5","slope_ws15")
 MGL1_tn <- merge(x=MGL1,y=makroreddata[c("AufID","hillheight_vr1500_hr1000_t125","Texture","crosc_DTM_50m_avg_ws5","TPI_i0m_o400m_10m","Normalized_Height","TPI_i0m_o250m_10m","Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5","slope_ws15")],by="AufID",all.x=T)
 preds_mGL1_tn <-c("crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5")
-mGL1_tn <- merge(x=mGL1,y=mesoreddata[c("AufID","slope_ws7","General_Curvature","TPI_i0m_o120m_10m","crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5")],by="AufID",all.x=T)
+mGL1_tn <- merge(x=mGL1,y=mesoreddata[c("AufID","slope_ws7","General_Curvature","TPI_i0m_o120m_10m","TPI_i0m_o50m_10m","crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5")],by="AufID",all.x=T)
 MGL2_tn <- merge(x=MGL2,y=makrodata[c("AufID","TPI_i0m_o900m","minic_ws15","crosc_ws11","hillheight_vr1500_hr1500_t200")],by="AufID",all.x=T)
 mGL2_tn <- merge(x=mGL2,y=mesodata[c("AufID","Topographic_Wetness_Index")],by="AufID",all.x=T)
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/modeldata_SuedundNordtirol.RData")
+#opar <- par()
+
 ##############################################################################################################################################################
 ##############################################################################################################################################################
 ##############################################################################################################################################################
@@ -204,7 +207,7 @@ boxplot(data=mGL1_tn,TPI_i0m_o120m_10m~c_mGL1,ylim=c(0,70),notch=T)
 par(mfrow=c(1,1))
 boxplot(data=mGL2_tn,Topographic_Wetness_Index~ c_mGL2,ylim=c(0,20),notch=T)
 #dev.off()
-
+######################              MGL1_correct_vs_wrong
 #svg("correct vs. wrong and Texture vs. hillheight.svg")
 par(mar=c(6,6,3,3))
 plotdata <- MGL1_tn[MGL1_tn$c_MGL1 %in% c(0,6),]
@@ -223,12 +226,21 @@ plot(y=plotdata$Normalized_Height,x=plotdata$crosc_DTM_50m_avg_ws5,col=plotdata$
 legend("topleft",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"),cex=0.5)
 #dev.off()
 
-svg("correct vs. wrong and crosssectional curvature vs. Texture.svg")
+#svg("correct vs. wrong and crosssectional curvature vs. Texture.svg")
 par(mar=c(6,6,3,3))
 plotdata <- MGL1_tn[MGL1_tn$c_MGL1 %in% c(0,6),]
 plotdata[plotdata$c_MGL1 == 0,"col"] <- "red"
 plotdata[plotdata$c_MGL1 == 6,"col"] <- "blue"
 plot(y=plotdata$Texture,x=plotdata$crosc_DTM_50m_avg_ws5,col=plotdata$col,pch=3,ylab="Texture",xlab="crosc")
+legend("topleft",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"),cex=0.5)
+#dev.off()
+
+svg("correct vs. wrong and crosssectional hillheight vs. TPI_400m.svg")
+par(mar=c(6,6,3,3))
+plotdata <- MGL1_tn[MGL1_tn$c_MGL1 %in% c(0,6),]
+plotdata[plotdata$c_MGL1 == 0,"col"] <- "red"
+plotdata[plotdata$c_MGL1 == 6,"col"] <- "blue"
+plot(y=plotdata$hillheight_vr1500_hr1000_t150,x=plotdata$TPI_i0m_o400m_10m,col=plotdata$col,pch=3,ylab="hillheight",xlab="TPI")
 legend("topleft",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"),cex=0.5)
 #dev.off()
 
@@ -242,6 +254,16 @@ str(plotdata$c_MGL2)
 plot(plotdata$TPI_i0m_o900m,plotdata$minic_ws15,col=plotdata$col,pch=3)
 legend("bottomright",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"))
 #dev.off()
+######################              mGL1_correct_vs_wrong
+#svg("MESO correct vs. wrong and Texture vs. hillheight.svg")
+par(mar=c(6,6,3,3))
+plotdata <- mGL1_tn[mGL1_tn$c_mGL1 %in% c(0,6),]
+plotdata[plotdata$c_mGL1 == 0,"col"] <- "red"
+plotdata[plotdata$c_mGL1 == 6,"col"] <- "blue"
+plot(y=plotdata$slope_ws7,x=plotdata$TPI_i0m_o120m_10m,col=plotdata$col,pch=3,ylab="slope",xlab="TPI")
+legend("topleft",legend=c("always correct","always wrong"),pch=3,col=c("blue","red"),cex=0.5)
+#dev.off()
+
 #################################################################testing 3d plots
 require(scatterplot3d)
 plotdata$pcol[plotdata$col == "0"] <-"red"
@@ -266,7 +288,7 @@ plot(plotdat)
 #######################################################################################
 ##plot for stepwise forward selection; ALSO TEST IF ONE_SE_RULE IS IMPLEMENTED RIGHTLY
 #svg("stepwiseselection.svg")
-mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mak_allterrain/";kk = 1:10;endround = 10;yrange = c(0.4,0.6);error="cverror";geheim="geheimerprederror"
+mypath="/home/fabs/Data/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mak_allterrain/";kk = 1:10;endround = 10;yrange = c(0.4,0.6);error="cverror";geheim="geheimerprederror"
 xrange <- c(1,endround)
 yrange=yrange
 plot(xrange,yrange,type="n",xlab="steps",ylab="prediction-error")
@@ -290,9 +312,9 @@ one.se.rule <- vcpreds[vcpreds$meanprederror==min(vcpreds$meanprederror),"standa
 lines(x=1:endround,y=rep(one.se.rule,times=endround),lwd=1)
 #dev.off()
 ####################################################################SLOPE VS SLOPE
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/relieflegends.RData")
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/mesomakrolegends.RData")
-load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/modeldata_SuedundNordtirol.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/relieflegends.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/mesomakrolegends.RData")
+load("/home/fabs/Data/paper1_lenny/modeldata_SuedundNordtirol.RData")
 ST_makrored$neigunggrad <- atan(ST_makrored$Neig/100)*180/pi
 NT_makrored$neigunggrad <- atan(NT_makrored$Neig/100)*180/pi
 
@@ -323,12 +345,12 @@ print(summary(svm_terrain_MGL1)$tot.accuracy )
 makromodeldata$preds  <-  predict(svm_terrain_MGL1,newdata=makromodeldata)
 makromodeldata <- merge(makromodeldata,makrolegend_gen1)
 summary(makromodeldata$preds)
-defredmaklevel
-svg("TWI_datapoints_MGL1.svg")
-boxplot(Topographic_Wetness_Index~Def_red_mak,data=makromodeldata,las=2)
+
+svg("TWI_datapoints_MGL1_2.svg")
+boxplot(Topographic_Wetness_Index~Def_red_mak,data=makromodeldata,las=2,aspect=0.1)
 dev.off()
-svg("TWI_datapoints_MGL1_predicted.svg")
-boxplot(Topographic_Wetness_Index~preds,data=makromodeldata,las=2)
+svg("TWI_datapoints_MGL1_predicted_2.svg"r)
+boxplot(Topographic_Wetness_Index~preds,data=makromodeldata,las=2,aspect=0.1)
 dev.off()
 ##
 svg("PROFC_datapoints_MGL1.svg")
