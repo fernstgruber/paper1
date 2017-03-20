@@ -1,0 +1,180 @@
+---
+title: "Def_red_mes RESULTS"
+author: "fabian gruber"
+date: "February 9, 2017"
+output: html_document
+---
+
+This compares the results of the forward stepwise selection for the macro scale GL1 and analyses the difference that stem from applying different measures of similarity, overall user accuracy, kappa, tau and quality.
+
+```{r}
+source("/media/fabs/Volume/Data/temp_delilah/DISS_new/neueszupaper1/fabians_and_rossiters_functions.R")
+load("/media/fabs/Volume/Data/temp_delilah/DISS_new/neueszupaper1/FWCV/mesoreddata_andpredlists.RData")
+relief_defredmes <- mesoreddata[c("Def_red_mes","AufID")]
+defredmes_ID <- mesoreddata$AufID
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/model_IDs.RData")
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/mesomakrolegends.RData")
+```
+
+## Dikau's Curvature Classification
+
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mes_allcurvcols_plusplus/",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mes_allcurvcols/",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mes_allcurvcols/",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_5pDef_red_mes_allcurvcols/",kk = 1:10,endround = 5,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one parameter sufficient:curv_landform_res50m_t700  (allways)
+- KAPPA: two parameter better :(  :curv_landform_res50m_t800  (6x, plus 4x curv_landform_res50m_t900) AND curv_landform_res150m_t400 or 500
+- TAU: one sufficient: curv_landform_res50m_t1000 ten times 
+- QUALITY:SINNLOS DA immer nur t1000
+
+```{r,echo=FALSE}
+predictors=c("curv_landform_res50m_t700","curv_landform_res50m_t800","curv_landform_res50m_t1000", c("curv_landform_res50m_t800","curv_landform_res150m_t400"))
+p=predictors[1]
+for(p in predictors){
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_mesored_dikau.RData")
+dikau_defredmes <- modeldata_mesored_dikau[modeldata_mesored_dikau$AufID %in% defredmes_ID,c("AufID",p,"Def_red_mes")]
+dikau_defredmes[[p]] <- as.factor(dikau_defredmes[[p]])
+rm(modeldata_mesored_dikau)
+predict_radial_newlegend_full(modeldata=dikau_defredmes,dependent="Def_red_mes",predictors=p,legend=mesolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## Woods morphometric features
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mes_wood_plus//",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mes_reallyfeatures//",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mes_allfeatures/",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mes_allfeatures/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one parameter: 5x feature_DTM_SouthTyrol_10m_ws11_ts11_tc0p006000  
+- KAPPA: one parameter sufficient but even unclearer: feature_DTM_SouthTyrol_10m_ws15_ts15_tc0_000010 (2x)
+- TAU: one parameter sufficient:5x feature_DTM_SouthTyrol_10m_ws11_ts15_tc0_000050
+- QUALITY: feature_DTM_50m_avg_ws3_ts8_tc0p000010 (6x)
+
+```{r,echo=FALSE}
+predictors=c("feature_DTM_SouthTyrol_10m_ws11_ts11_tc0p006000","feature_DTM_SouthTyrol_10m_ws15_ts15_tc0_000010","feature_DTM_50m_avg_ws3_ts8_tc0p000010")
+p=predictors[1]
+for(p in predictors){
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/modeldata_mesoreddata_wood_withAufID.RData")
+data<- modeldata_mesoreddata_wood[modeldata_mesoreddata_wood$AufID %in% defredmes_ID,c("AufID",p,"Def_red_mes")]
+rm(modeldata_mesoreddata_wood)
+predict_radial_newlegend_full(modeldata=data,dependent="Def_red_mes",predictors=p,legend=mesolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## Schmidt's fuzzy elements
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mes_fuzzynov/",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA, achtung geht noch nicht, im moment will ich aber nur UA und ev. QA")
+#evaluateforwardCV_anyerror(mypath="//media/fabs/Volume/Data/temp_delilah/DISS_new/neueszupaper1/FWCV/kappa_svm_fw_10fold_5p_trial2Def_red_mes_allfuzzy_reducedto2p",kk = 1:10,endround = 2,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+#evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mes_allfuzzy_redto2p",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mes_allfuzzy/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one predictor sufficient (not clear): Fuzzylandform_res50m_ls3_hs21_R1250_R2166 (3x)
+
+- QUALITY: sehr unsicher, 2x nr1 = Fuzzylandform_res150m_ls12_hs21_R1111_R2100; auch so ein bisserl ein mittelwert, zumindest bei slope 
+  
+```{r,echo=FALSE}
+predictors=c("Fuzzylandform_res50m_ls3_hs21_R1250_R2166","Fuzzylandform_res150m_ls12_hs21_R1111_R2100")
+p=predictors[1]
+load("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/fuzzydata.RData")
+fuzzy <- merge(x=fuzzy10m,relief_defredmes,by="AufID",all.x=T)
+
+for(p in predictors){
+fuzzy_defredmes <- fuzzy[fuzzy$AufID %in% defredmes_ID,c("AufID",p,"Def_red_mes")]
+predict_radial_newlegend_full(modeldata=fuzzy_defredmes,dependent="Def_red_mes",predictors=p,legend=mesolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## TPI-based landform classification
+
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mes_alltpilandforms/",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mes_tpilandforms//",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mes_alltpilandforms/",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+  evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mes_alltpilandforms/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: one parameter sufficient: TPI_landforms_r90R50_10m (7x)
+- KAPPA: same as UA
+- TAU: same as UA
+- QUALITY: TPI_landforms_r100R100_10m ??? aber 90m50m kommt auch vor
+```{r,echo=FALSE}
+predictors=c("TPI_landforms_r90R50_10m","TPI_landforms_r100R100_10m")
+p=predictors[1]
+for(p in predictors){
+tpiLF_defredmes <- mesoreddata[mesoreddata$AufID %in% defredmes_ID,c("AufID",p,"Def_red_mes")]
+tpiLF_defredmes[[p]] <- as.factor(tpiLF_defredmes[[p]])
+predict_radial_newlegend_full(modeldata=tpiLF_defredmes,dependent="Def_red_mes",predictors=p,legend=mesolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## Geomorphon-based landforms
+
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_3p_Def_red_mes_allgeoms//",kk = 1:10,endround = 3,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mes_reallygeoms//",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mes_allgeoms//",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mes_allgeoms/",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: only 1 predictor necessary :3x geom_10m_fl8_L8 (aber representativ)
+- KAPPA: only 1 predictor necessary :geom_10m_fl10_L15 (4x) aber auch ganz represantiv
+- TAU: only 1 predictor necessary :geom_DTM_50m_avg_fl8_L150m , kommt auch bei den anderen vor
+- QUALITY: sehr ähnliche werte
+
+```{r,echo=FALSE}
+predictors=c("geom_10m_fl8_L8","geom_DTM_50m_avg_fl8_L150m","geom_10m_fl10_L15")
+p=predictors[1]
+for(p in predictors){
+geom_defredmes <- mesoreddata[mesoreddata$AufID %in% defredmes_ID,c("AufID",p,"Def_red_mes")]
+predict_radial_newlegend_full(modeldata=geom_defredmes,dependent="Def_red_mes",predictors=p,legend=mesolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
+## Terrain parameter based model of topographic position
+
+```{r, echo=FALSE}
+print("USER'S ACCURACY")
+evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mes_allterrain",kk = 1:10,endround = 10,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("mit tpis:")
+  evaluateforwardCV_anyerror("/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/results_selection/svm_fw_10fold_10p_Def_red_mes_tpiterrain/",kk = 1:10,endround = 10,yrange = c(0,0.8),geheim = "geheimerprederror",error="prederror")
+print("KAPPA")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/kappa_svm_fw_10fold_5p_Def_red_mes_tpiterraintophat//",kk = 1:10,endround = 5,yrange = c(0.5,1),geheim="geheimerkappaerror",error="kappa")
+print("TAU")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/tau_svm_fw_10fold_5p_Def_red_mes_tpiterraintophat/",kk = 1:10,endround = 3,yrange = c(0,1),geheim="geheimertauerror",error="tau")
+evaluateforwardCV_anyerror(mypath="/media/fabs/Volume/01_PAPERZEUG/paper1_lenny/neu_unzugeordnet/FWCV/quality_svm_fw_10fold_2pDef_red_mes_tpiterraintophat//",kk = 1:10,endround = 2,yrange = c(0,1),geheim="geheimercv_qualityerror",error="cv_quality")
+```
+- UA: without tpi!!:"crosc_ws5",
+- KAPPA: seems 4 are appropriate: NR1: 
+- TAU: 
+- QUALITY: 
+```{r,echo=FALSE}
+predictors=list(c("crosc_ws5","slope_DTM_50m_avg_ws3","General_Curvature","maxic_ws5"),c("TPI_i0m_o70m_10m","slope_DTM_50m_avg_ws3"))
+p=predictors[1]
+for(p in predictors){
+terrain_defredmes <- mesoreddata[mesoreddata$AufID %in% defredmes_ID,c("AufID",unlist(p),"Def_red_mes")]
+predict_radial_newlegend_full(modeldata=terrain_defredmes,dependent="Def_red_mes",predictors=unlist(p),legend=mesolegend_gen1,doreturn=F)
+print("###################################################################################################")
+}
+```
+
