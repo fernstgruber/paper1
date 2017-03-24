@@ -1,6 +1,5 @@
 
 setwd("/home/fabs/Data/paper1_lenny/Rplots")
-load("/home/fabs/Data/paper1_lenny/relieflegends.RData")
 load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/allmodeldataforSVM.RData")
 load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/makroreddata_andpredlists.RData")
 load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/mesoreddata_andpredlists.RData")
@@ -8,14 +7,16 @@ load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/makrodata_andpredlists.
 load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV/mesodata_andpredlists.RData")
 load("/home/fabs/Data/paper1_lenny/datawithpreds.RData")
 load("/home/fabs/Data/paper1_lenny/modeldata_SuedundNordtirol.RData")
-
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/relieflegends.RData")
+load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/mesomakrolegends.RData")
 MGL1 <- datawithpreds[!(is.na(datawithpreds$c_MGL1)),]
 MGL2 <- datawithpreds[!(is.na(datawithpreds$c_MGL2)),]
 mGL1 <- datawithpreds[!(is.na(datawithpreds$c_mGL1)),]
 mGL2 <- datawithpreds[!(is.na(datawithpreds$c_mGL2)),]
 preds_MGL1_tn <- c("Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5","slope_ws15")
 MGL1_tn <- merge(x=MGL1,y=makroreddata[c("AufID","hillheight_vr1500_hr1000_t125","Texture","crosc_DTM_50m_avg_ws5","TPI_i0m_o400m_10m","Normalized_Height","TPI_i0m_o250m_10m","Topographic_Wetness_Index","profc_DTM_50m_avg_ws7","minic_DTM_50m_avg_ws5","slope_ws15")],by="AufID",all.x=T)
-preds_mGL1_tn <-c("crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5")
+preds_mGL1_tn <-  c("TPI_i0m_o70m_10m","slope_DTM_50m_avg_ws3")
+preds_mGL1_tn2 <-c("crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5")
 mGL1_tn <- merge(x=mGL1,y=mesoreddata[c("AufID","slope_ws7","General_Curvature","TPI_i0m_o120m_10m","TPI_i0m_o50m_10m","crosc_ws5","minic_ws15","slope_DTM_50m_avg_ws3","maxic_ws5")],by="AufID",all.x=T)
 MGL2_tn <- merge(x=MGL2,y=makrodata[c("AufID","TPI_i0m_o900m","minic_ws15","crosc_ws11","hillheight_vr1500_hr1500_t200")],by="AufID",all.x=T)
 mGL2_tn <- merge(x=mGL2,y=mesodata[c("AufID","Topographic_Wetness_Index")],by="AufID",all.x=T)
@@ -312,8 +313,7 @@ one.se.rule <- vcpreds[vcpreds$meanprederror==min(vcpreds$meanprederror),"standa
 lines(x=1:endround,y=rep(one.se.rule,times=endround),lwd=1)
 #dev.off()
 ####################################################################SLOPE VS SLOPE
-load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/relieflegends.RData")
-load("/home/fabs/Data/paper1_lenny/neu_unzugeordnet/FWCV_NORDTIROL/mesomakrolegends.RData")
+
 load("/home/fabs/Data/paper1_lenny/modeldata_SuedundNordtirol.RData")
 ST_makrored$neigunggrad <- atan(ST_makrored$Neig/100)*180/pi
 NT_makrored$neigunggrad <- atan(NT_makrored$Neig/100)*180/pi
@@ -339,73 +339,42 @@ lines(x=c(0,65),y=c(0,65),col="red")
 ########################################################################################TERRAIN PARAMETER STATS FOR TERRAIN PREDICTIONS OF TEST SET
 ##########################MGL1
 require(e1071)
+set.seed(101)
 makromodeldata <- ST_makrored[c("Def_red_mak",preds_MGL1_tn)]
 svm_terrain_MGL1 <- svm(data=makromodeldata,Def_red_mak~. , cross=10) 
 print(summary(svm_terrain_MGL1)$tot.accuracy )
 makromodeldata$preds  <-  predict(svm_terrain_MGL1,newdata=makromodeldata)
-makromodeldata <- merge(makromodeldata,makrolegend_gen1)
+makromodeldata <- merge(makromodeldata,makrolegend_gen1,by.x="preds",by.y="Def_red_mak")
 summary(makromodeldata$preds)
-
-svg("TWI_datapoints_MGL1_2.svg")
-boxplot(Topographic_Wetness_Index~Def_red_mak,data=makromodeldata,las=2,aspect=0.1)
+summary(makromodeldata$makrogeneralized1)
+par(mar=c(3,3,1,1))
+svg("TWI_datapoints_MGL1_predicted.svg",height=4,width=8,bg = "transparent")
+boxplot(Topographic_Wetness_Index~makrogeneralized1,data=makromodeldata,las=2)
 dev.off()
-svg("TWI_datapoints_MGL1_predicted_2.svg"r)
-boxplot(Topographic_Wetness_Index~preds,data=makromodeldata,las=2,aspect=0.1)
+svg("PROFC_datapoints_MGL1_predicted.svg",height=4,width=8,bg = "transparent")
+boxplot(profc_DTM_50m_avg_ws7~makrogeneralized1,data=makromodeldata,las=2)
 dev.off()
-##
-svg("PROFC_datapoints_MGL1.svg")
-boxplot(profc_DTM_50m_avg_ws7~Def_red_mak,data=makromodeldata,las=2)
+svg("MINIC_datapoints_MGL1_predicted.svg",height=4,width=8,bg = "transparent")
+boxplot(minic_DTM_50m_avg_ws5~makrogeneralized1,data=makromodeldata,las=2)
 dev.off()
-svg("PROFC_datapoints_MGL1_predicted.svg")
-boxplot(profc_DTM_50m_avg_ws7~preds,data=makromodeldata,las=2)
-dev.off()
-##
-svg("MINIC_datapoints_MGL1.svg")
-boxplot(minic_DTM_50m_avg_ws5~Def_red_mak,data=makromodeldata,las=2)
-dev.off()
-svg("MINIC_datapoints_MGL1_predicted.svg")
-boxplot(minic_DTM_50m_avg_ws5~preds,data=makromodeldata,las=2)
-dev.off()
-##
-svg("SLOPE_datapoints_MGL1.svg")
-boxplot(slope_ws15~Def_red_mak,data=makromodeldata,las=2)
-dev.off()
-svg("SLOPE_datapoints_MGL1_predicted.svg")
-boxplot(slope_ws15~preds,data=makromodeldata,las=2)
+svg("SLOPE_datapoints_MGL1_predicted.svg",height=4,width=8,bg = "transparent")
+boxplot(slope_ws15~makrogeneralized1,data=makromodeldata,las=2)
 dev.off()
 ##################mGL1
 require(e1071)
+set.seed(101)
 mesomodeldata <- ST_mesored[c("Def_red_mes",preds_mGL1_tn)]
 svm_terrain_mGL1 <- svm(data=mesomodeldata,Def_red_mes~. , cross=10) 
 print(summary(svm_terrain_mGL1)$tot.accuracy )
 mesomodeldata$preds  <-  predict(svm_terrain_mGL1,newdata=mesomodeldata)
+mesomodeldata <- merge(mesomodeldata,mesolegend_gen1,by.x="preds",by.y="Def_red_mes")
 summary(mesomodeldata$preds)
+summary(mesomodeldata$mesogeneralized1)
+svg("TPI_datapoints_mGL1_predicted.svg",height=4,width=8,bg = "transparent")
+boxplot(TPI_i0m_o70m_10m~mesogeneralized1,data=mesomodeldata,las=2)
+dev.off()
 
-svg("CROSC_datapoints_mGL1.svg")
-boxplot(crosc_ws5~Def_red_mes,data=mesomodeldata,las=2)
-dev.off()
-svg("CROSC_datapoints_mGL1_predicted.svg")
-boxplot(crosc_ws5~preds,data=mesomodeldata,las=2)
-dev.off()
-##
-svg("MINIC_datapoints_mGL1.svg")
-boxplot(minic_ws15~Def_red_mes,data=mesomodeldata,las=2)
-dev.off()
-svg("MINIC_datapoints_mGL1_predicted.svg")
-boxplot(minic_ws15~preds,data=mesomodeldata,las=2)
-dev.off()
-##
-svg("MAXIC_datapoints_mGL1.svg")
-boxplot(maxic_ws5~Def_red_mes,data=mesomodeldata,las=2)
-dev.off()
-svg("MAXIC_datapoints_mGL1_predicted.svg")
-boxplot(maxic_ws5~preds,data=mesomodeldata,las=2)
-dev.off()
-##
-svg("SLOPE_datapoints_mGL1.svg")
-boxplot(slope_DTM_50m_avg_ws3~Def_red_mes,data=mesomodeldata,las=2)
-dev.off()
-svg("SLOPE_datapoints_mGL1_predicted.svg")
-boxplot(slope_DTM_50m_avg_ws3~preds,data=mesomodeldata,las=2)
+svg("SLOPE_datapoints_mGL1_predicted.svg",,height=4,width=8,bg = "transparent")
+boxplot(slope_DTM_50m_avg_ws3~mesogeneralized1,data=mesomodeldata,las=2)
 dev.off()
 ##
